@@ -1,0 +1,210 @@
+.page {
+  width: 100%;
+  max-width: 480px; /* keeps it phone-width even on larger screens/tablets */
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 8px;
+  color: #1a1a2e;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.appointment-card {
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  padding: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.appointment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.appointment-card p {
+  font-size: 14px;
+  color: #6b6b76;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #f0f0f4;
+  white-space: nowrap;
+}
+
+/* Modal: a bottom sheet, matching your wireframe.
+   Positioned with `fixed` so it stays put regardless of scroll position,
+   and respects safe-area-inset-bottom for phones with gesture bars
+   (common on newer Android phones, e.g. Galaxy S-series). */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-panel {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-panel input,
+.modal-panel select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px; /* avoids iOS zoom-on-focus; harmless on Android */
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 14px;
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+}
+
+.secondary-button {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 12px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.brand-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap; /* prevents overflow on narrower Android screens */
+}
+
+.brand-chip {
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.brand-chip.selected {
+  background: #1a1a2e;
+  color: white;
+  border-color: #1a1a2e;
+}
+
+.part-name-row {
+  display: flex;
+  gap: 8px;
+}
+
+.part-name-row input {
+  flex: 1;
+  min-width: 0; /* prevents flex item from overflowing its container */
+}
+
+.part-name-row select {
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.parts-list {
+  margin-bottom: 8px;
+}
+
+.part-row {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.part-model {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.empty-state {
+  color: #999;
+  font-size: 14px;
+}
+
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.appointment-header p {
+  font-size: 14px;
+  color: #6b6b76;
+}
