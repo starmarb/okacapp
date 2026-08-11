@@ -5,7 +5,7 @@ import AddAppointmentModal from "../components/AddAppointmentModal";
 export default function SchedulePage() {
   const [appointments, setAppointments] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [errors, setErrors] = useState({});
+
 
   useEffect(() => {
     async function loadData() {
@@ -63,42 +63,3 @@ export default function SchedulePage() {
 
 
 
-
-function validate() {
-  const newErrors = {};
-  // TODO: for each required field, check if form.fieldName is empty (an empty string is falsy),
-  // and if so, add an entry to newErrors, e.g. newErrors.name = "필수 항목입니다";
-  // there are 5 required fields to check — repeat the pattern for each
-  if (!form.service_type) {
-    newErrors.service_type = "필수 항목입니다";
-  }
-  if (!form.appointment_date) {
-    newErrors.appointment_date = "필수 항목입니다";
-  }
-  if (!form.name) {
-    newErrors.name = "필수 항목입니다";
-  }
-  if (!form.address) {
-    newErrors.address = "필수 항목입니다";
-  }
-  if (!form.phone) {
-    newErrors.phone = "필수 항목입니다";
-  }
-
-  return newErrors;
-}
-
-async function handleSubmit() {
-  const newErrors = validate();
-  if (Object.keys(newErrors).length != 0) {
-    setSubmitting(false);
-  }
-  setSubmitting(true);
-  try {
-    const { service_type, name, ...appointmentData } = form;
-    await createAppointment(appointmentData);
-    onCreated();
-  } finally {
-    setSubmitting(false);
-  }
-}
