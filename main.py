@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import Optional
 from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from db import init_db, get_db, STATUS_VALUES
@@ -14,6 +15,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ---------- Pydantic models ----------
@@ -35,7 +44,7 @@ class AppointmentIn(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     status: str = "scheduled"
-    appointment_date: Optional[str] = None
+    appointment_date: str  # required — no appointment without a date/time
     completed_date: Optional[str] = None
     work_done: Optional[str] = None
 
@@ -43,6 +52,16 @@ class AppointmentIn(BaseModel):
 class AppointmentPartIn(BaseModel):
     part_id: int
     quantity: int = 1
+
+
+class AppointmentUpdate(BaseModel):
+    status: Optional[str] = None
+    appointment_date: Optional[str] = None  # optional here — PATCH is a partial update
+    completed_date: Optional[str] = None
+    work_done: Optional[str] = None
+    address: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
 
 
 # ---------- Parts ----------
@@ -166,6 +185,34 @@ async def delete_appointment(appointment_id: int):
         conn.execute("DELETE FROM photos WHERE appointment_id = ?", (appointment_id,))
         conn.execute("DELETE FROM appointments WHERE id = ?", (appointment_id,))
         return {"deleted": appointment_id}
+
+
+@app.patch("/appointments/{appointment_id}")
+async def update_appointment(appointment_id: int, update: AppointmentUpdate):
+    """Partial update — only send the fields you want to change.
+    e.g. {"status": "completed", "completed_date": "2026-08-11", "work_done": "Replaced compressor"}"""
+    if update.status is not None and update.status not in STATUS_VALUES:
+        raise HTTPException(status_code=400, detail=f"status must be one of {STATUS_VALUES}")
+
+    with get_db() as conn:
+        existing = conn.execute(
+            "SELECT * FROM appointments WHERE id = ?", (appointment_id,)
+        ).fetchone()
+        if not existing:
+            raise HTTPException(status_code=404, detail="Appointment not found")
+
+        updates = update.model_dump(exclude_unset=True)
+        if not updates:
+            return dict(existing)
+
+        set_clause = ", ".join(f"{field} = ?" for field in updates)
+        values = list(updates.values()) + [appointment_id]
+        conn.execute(f"UPDATE appointments SET {set_clause} WHERE id = ?", values)
+
+        updated = conn.execute(
+            "SELECT * FROM appointments WHERE id = ?", (appointment_id,)
+        ).fetchone()
+        return dict(updated)
 
 
 @app.post("/appointments/{appointment_id}/parts")
