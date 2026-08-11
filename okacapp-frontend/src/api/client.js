@@ -62,6 +62,26 @@ export function addPartToAppointment(appointmentId, data) {
   });
 }
 
+export function addPartInstance(partId, data) {
+  return request(`/parts/${partId}/instances`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function updateAppointmentPartQuantity(appointmentId, partId, quantity) {
+  return request(`/appointments/${appointmentId}/parts/${partId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ quantity }),
+  });
+}
+
+export function deleteAppointmentPartInstances(appointmentId, partId) {
+  return request(`/appointments/${appointmentId}/parts/${partId}/instances`, {
+    method: "DELETE",
+  });
+}
+
 // ---------- Photos ----------
 // Uses FormData instead of JSON since it's a file upload.
 

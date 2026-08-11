@@ -68,6 +68,7 @@ export default function AddAppointmentModal({ onClose, onCreated }) {
           <option value="수리">수리</option>
           <option value="설치">설치</option>
           <option value="공사">공사</option>
+          <option value="기타">기타</option>
         </select>
         {errors.service_type && <p className="error-text">{errors.service_type}</p>}
 

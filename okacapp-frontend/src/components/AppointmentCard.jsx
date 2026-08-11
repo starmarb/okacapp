@@ -1,9 +1,4 @@
-// Colors matched to the Figma design — each service type gets its own tint.
-const SERVICE_COLORS = {
-  수리: { bg: "rgba(153, 182, 201, 0.1)", border: "#99b6c9" },
-  설치: { bg: "rgba(154, 184, 149, 0.1)", border: "#9ab895" },
-  공사: { bg: "rgba(201, 167, 153, 0.1)", border: "#c9a799" },
-};
+import { SERVICE_COLORS } from "../pages/AppointmentDetailPage";
 
 // Formats "2026-08-11T14:30" into "2:30PM" (matches the Figma design's format —
 // no space before AM/PM, unlike the browser's default toLocaleTimeString).
@@ -17,16 +12,22 @@ function formatTime(dateString) {
   return `${hours}:${minutes}${period}`;
 }
 
+// Converts a hex color like "#99B6C9" into a light 10%-opacity background tint.
+function hexToTintedBackground(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, 0.1)`;
+}
+
 export default function AppointmentCard({ appointment, onClick }) {
-  const colors = SERVICE_COLORS[appointment.service_type] || {
-    bg: "#f5f5f5",
-    border: "#ddd",
-  };
+  const borderColor = SERVICE_COLORS[appointment.service_type] || "#ddd";
+  const backgroundColor = hexToTintedBackground(borderColor);
 
   return (
     <div
       className="appointment-card"
-      style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+      style={{ backgroundColor, borderColor }}
       onClick={onClick}
     >
       <div className="appointment-card-header">

@@ -25,8 +25,10 @@ def init_db():
             CREATE TABLE IF NOT EXISTS part_instances (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 part_id INTEGER NOT NULL,
+                appointment_id INTEGER,
                 serial_number TEXT NOT NULL,
-                FOREIGN KEY (part_id) REFERENCES parts(id)
+                FOREIGN KEY (part_id) REFERENCES parts(id),
+                FOREIGN KEY (appointment_id) REFERENCES appointments(id)
             )
         """)
 

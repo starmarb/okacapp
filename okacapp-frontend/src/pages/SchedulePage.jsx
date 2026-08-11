@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAppointments } from "../api/client";
 import AddAppointmentModal from "../components/AddAppointmentModal";
 import AppointmentCard from "../components/AppointmentCard";
@@ -6,6 +7,7 @@ import AppointmentCard from "../components/AppointmentCard";
 export default function SchedulePage() {
   const [appointments, setAppointments] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadData() {
@@ -21,9 +23,9 @@ export default function SchedulePage() {
   const day = String(now.getDate()).padStart(2, "0");
   const today = `${year}-${month}-${day}`;
 
-  const todayAppointments = appointments.filter((appt) => {
-    return appt.appointment_date.startsWith(today);
-  });
+  const todayAppointments = appointments
+    .filter((appt) => appt.appointment_date.startsWith(today))
+    .sort((a, b) => a.appointment_date.localeCompare(b.appointment_date));
 
   return (
     <div className="page">
@@ -34,7 +36,11 @@ export default function SchedulePage() {
 
       <div className="card-list">
         {todayAppointments.map((appt) => (
-          <AppointmentCard key={appt.id} appointment={appt} />
+          <AppointmentCard
+            key={appt.id}
+            appointment={appt}
+            onClick={() => navigate(`/appointments/${appt.id}`)}
+          />
         ))}
       </div>
 

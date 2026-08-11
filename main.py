@@ -36,6 +36,7 @@ class PartIn(BaseModel):
 
 class PartInstanceIn(BaseModel):
     serial_number: str
+    appointment_id: Optional[int] = None  # which appointment this specific unit was installed on
 
 
 class AppointmentIn(BaseModel):
@@ -53,6 +54,10 @@ class AppointmentIn(BaseModel):
 class AppointmentPartIn(BaseModel):
     part_id: int
     quantity: int = 1
+
+
+class AppointmentPartUpdate(BaseModel):
+    quantity: int
 
 
 class AppointmentUpdate(BaseModel):
@@ -113,10 +118,15 @@ async def add_part_instance(part_id: int, instance: PartInstanceIn):
         if not part:
             raise HTTPException(status_code=404, detail="Part not found")
         cur = conn.execute(
-            "INSERT INTO part_instances (part_id, serial_number) VALUES (?, ?)",
-            (part_id, instance.serial_number),
+            "INSERT INTO part_instances (part_id, appointment_id, serial_number) VALUES (?, ?, ?)",
+            (part_id, instance.appointment_id, instance.serial_number),
         )
-        return {"id": cur.lastrowid, "part_id": part_id, "serial_number": instance.serial_number}
+        return {
+            "id": cur.lastrowid,
+            "part_id": part_id,
+            "appointment_id": instance.appointment_id,
+            "serial_number": instance.serial_number,
+        }
 
 
 # ---------- Appointments ----------
@@ -159,6 +169,17 @@ async def get_appointment(appointment_id: int):
                WHERE ap.appointment_id = ?""",
             (appointment_id,),
         ).fetchall()
+        parts = [dict(p) for p in parts]
+
+        # For each part used on this appointment, attach only the serial numbers
+        # that were installed on THIS appointment — not every serial the part
+        # type has ever had recorded, which could span other appointments too.
+        for part in parts:
+            serials = conn.execute(
+                "SELECT serial_number FROM part_instances WHERE part_id = ? AND appointment_id = ?",
+                (part["id"], appointment_id),
+            ).fetchall()
+            part["serial_numbers"] = [s["serial_number"] for s in serials]
 
         photos = conn.execute(
             "SELECT id, storage_key FROM photos WHERE appointment_id = ?",
@@ -166,7 +187,7 @@ async def get_appointment(appointment_id: int):
         ).fetchall()
 
         result = dict(row)
-        result["parts"] = [dict(p) for p in parts]
+        result["parts"] = parts
         result["photos"] = [dict(p) for p in photos]
         return result
 
@@ -236,6 +257,39 @@ async def add_part_to_appointment(appointment_id: int, ap: AppointmentPartIn):
             (appointment_id, ap.part_id, ap.quantity),
         )
         return {"appointment_id": appointment_id, "part_id": ap.part_id, "quantity": ap.quantity}
+
+
+@app.patch("/appointments/{appointment_id}/parts/{part_id}")
+async def update_appointment_part(appointment_id: int, part_id: int, update: AppointmentPartUpdate):
+    """Sets the quantity directly (unlike POST, which adds to the existing quantity).
+    Used when editing an already-added part's count on this appointment."""
+    with get_db() as conn:
+        existing = conn.execute(
+            "SELECT * FROM appointment_parts WHERE appointment_id = ? AND part_id = ?",
+            (appointment_id, part_id),
+        ).fetchone()
+        if not existing:
+            raise HTTPException(status_code=404, detail="This part is not linked to this appointment")
+
+        conn.execute(
+            "UPDATE appointment_parts SET quantity = ? WHERE appointment_id = ? AND part_id = ?",
+            (update.quantity, appointment_id, part_id),
+        )
+        return {"appointment_id": appointment_id, "part_id": part_id, "quantity": update.quantity}
+
+
+@app.delete("/appointments/{appointment_id}/parts/{part_id}/instances")
+async def delete_appointment_part_instances(appointment_id: int, part_id: int):
+    """Clears every serial number recorded for this part on this specific appointment.
+    Used during editing: wipe the old set, then re-add whatever the technician
+    enters in the edit form — simpler and less error-prone than trying to
+    reconcile individual additions/removals/renames."""
+    with get_db() as conn:
+        conn.execute(
+            "DELETE FROM part_instances WHERE appointment_id = ? AND part_id = ?",
+            (appointment_id, part_id),
+        )
+        return {"deleted": True}
 
 
 @app.post("/appointments/{appointment_id}/photos")

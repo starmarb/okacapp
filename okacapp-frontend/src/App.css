@@ -221,3 +221,270 @@ textarea {
   font-size: 14px;
   color: #6b6b76;
 }
+
+/* ---------- Appointment Detail Page ---------- */
+
+.detail-page h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+.detail-time {
+  font-size: 17px;
+}
+
+.detail-header p {
+  font-size: 14px;
+  color: #333;
+  margin: 4px 0 0;
+}
+
+.detail-header p.detail-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.service-badge {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border: 1px solid;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.work-done-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 14px;
+  background: #eeeeff;
+  border: 1px solid #858585;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 15px;
+  resize: vertical;
+  /* No maxLength attribute anywhere in the component — length is unrestricted. */
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  margin: 24px 0;
+}
+
+.used-part-box {
+  border: 1px solid #c7c7cc;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.used-part-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.part-count {
+  font-weight: 300;
+  color: #666;
+}
+
+.serial-number-display {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+  margin: 4px 0 0;
+}
+
+.edit-button {
+  background: rgba(194, 194, 194, 0.47);
+  border: none;
+  border-radius: 5px;
+  padding: 5px 12px;
+  font-size: 14px;
+  color: #1a1f3d;
+  cursor: pointer;
+}
+
+/* ---------- Add Part Form (inline card, not a modal) ---------- */
+
+.add-part-form {
+  border: 1px solid #858585;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 10px;
+}
+
+.add-part-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.add-part-header h3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.icon-button-small {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #858585;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.brand-logo-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.edit-brand-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.edit-brand-name-display {
+  padding: 10px 0 14px;
+  font-size: 15px;
+}
+
+.edit-note {
+  font-size: 12px;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+.brand-logo-chip {
+  flex: 1;
+  border: 1px solid #d9d9d9;
+  border-radius: 7px;
+  background: white;
+  padding: 6px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.brand-logo-chip img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.brand-logo-chip.dimmed {
+  opacity: 0.35;
+}
+
+.brand-logo-chip.selected {
+  opacity: 1;
+  border: 2px solid #4444e7;
+}
+
+.part-name-quantity-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.part-name-quantity-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.part-name-quantity-row select,
+.part-name-quantity-row input[type="number"] {
+  width: 70px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.serial-number-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.serial-number-row input {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+  /* background color is now controlled inline via fillStateStyle() in AddPartForm.jsx —
+     starts light lavender when empty, switches to white once filled in */
+}
+
+.camera-button {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.camera-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.add-part-submit {
+  margin-top: 4px;
+  background: #444ae7;
+}
+
+.add-part-trigger {
+  width: 100%;
+  padding: 20px;
+  margin-top: 10px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 7px;
+  font-size: 28px;
+  color: #1a1f3d;
+  cursor: pointer;
+}
+
+.complete-button {
+  background: #1a1f3d;
+  border-radius: 10px;
+  font-size: 18px;
+  padding: 18px;
+}
+
+.photo-placeholder-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.photo-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 4px;
+  background: linear-gradient(to right, rgba(217, 217, 217, 0.24), rgba(133, 133, 133, 0.29));
+}
