@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { getAppointments } from "../api/client";
 import AddAppointmentModal from "../components/AddAppointmentModal";
+import AppointmentCard from "../components/AppointmentCard";
 
 export default function SchedulePage() {
   const [appointments, setAppointments] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
 
   useEffect(() => {
     async function loadData() {
@@ -25,7 +25,6 @@ export default function SchedulePage() {
     return appt.appointment_date.startsWith(today);
   });
 
-  
   return (
     <div className="page">
       <div className="page-header">
@@ -35,31 +34,23 @@ export default function SchedulePage() {
 
       <div className="card-list">
         {todayAppointments.map((appt) => (
-          <div key={appt.id} className="appointment-card">
-            <strong>{appt.appointment_date}</strong>
-            <p>{appt.address}</p>
-            <p>{appt.phone}</p>
-            <p>{appt.status}</p>
-          </div>
+          <AppointmentCard key={appt.id} appointment={appt} />
         ))}
       </div>
 
       {showModal && (
-      <AddAppointmentModal
-        onClose={() => setShowModal(false)}
-        onCreated={() => {
-          setShowModal(false);
-          async function loadData() {
-            const data = await getAppointments();
-            setAppointments(data);
-          }
-          loadData();
-        }}
-      />
-    )}
+        <AddAppointmentModal
+          onClose={() => setShowModal(false)}
+          onCreated={() => {
+            setShowModal(false);
+            async function loadData() {
+              const data = await getAppointments();
+              setAppointments(data);
+            }
+            loadData();
+          }}
+        />
+      )}
     </div>
   );
 }
-
-
-

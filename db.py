@@ -39,6 +39,7 @@ def init_db():
                 email TEXT,
                 status TEXT NOT NULL DEFAULT 'scheduled'
                     CHECK (status IN {STATUS_VALUES}),
+                service_type TEXT,
                 appointment_date TEXT,
                 completed_date TEXT,
                 work_done TEXT

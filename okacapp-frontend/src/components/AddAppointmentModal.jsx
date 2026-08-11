@@ -46,8 +46,7 @@ export default function AddAppointmentModal({ onClose, onCreated }) {
     }
     setSubmitting(true);
     try {
-      const { service_type, ...appointmentData } = form;
-      await createAppointment(appointmentData);
+      await createAppointment(form);
       onCreated();
     } finally {
       setSubmitting(false);
@@ -64,10 +63,7 @@ export default function AddAppointmentModal({ onClose, onCreated }) {
           </button>
         </div>
 
-        {/* TODO: service_type (수리/설치/공사) has no backend column yet.
-            Need to add a `service_type` TEXT column to the appointments table
-            in db.py before this dropdown's value can actually be saved. */}
-        <select onChange={(e) => updateField("service_type", e.target.value)}>
+        <select value={form.service_type} onChange={(e) => updateField("service_type", e.target.value)}>
           <option value="">서비스</option>
           <option value="수리">수리</option>
           <option value="설치">설치</option>
@@ -82,9 +78,11 @@ export default function AddAppointmentModal({ onClose, onCreated }) {
           onChange={(e) => updateField("name", e.target.value)}
         />
         {errors.name && <p className="error-text">{errors.name}</p>}
+
         <input
           type="datetime-local"
           placeholder="날짜 및 시간"
+          value={form.appointment_date}
           onChange={(e) => updateField("appointment_date", e.target.value)}
         />
         {errors.appointment_date && <p className="error-text">{errors.appointment_date}</p>}
@@ -104,7 +102,6 @@ export default function AddAppointmentModal({ onClose, onCreated }) {
           onChange={(e) => updateField("phone", e.target.value)}
         />
         {errors.phone && <p className="error-text">{errors.phone}</p>}
-        
         <input
           type="email"
           placeholder="이메일"

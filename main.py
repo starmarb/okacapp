@@ -44,6 +44,7 @@ class AppointmentIn(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     status: str = "scheduled"
+    service_type: str  # 수리 / 설치 / 공사 — required, drives the card's color coding
     appointment_date: str  # required — no appointment without a date/time
     completed_date: Optional[str] = None
     work_done: Optional[str] = None
@@ -56,6 +57,7 @@ class AppointmentPartIn(BaseModel):
 
 class AppointmentUpdate(BaseModel):
     status: Optional[str] = None
+    service_type: Optional[str] = None
     appointment_date: Optional[str] = None  # optional here — PATCH is a partial update
     completed_date: Optional[str] = None
     work_done: Optional[str] = None
@@ -126,10 +128,10 @@ async def create_appointment(appt: AppointmentIn):
     with get_db() as conn:
         cur = conn.execute(
             """INSERT INTO appointments
-               (name, address, phone, email, status, appointment_date, completed_date, work_done)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+               (name, address, phone, email, status, service_type, appointment_date, completed_date, work_done)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (appt.name, appt.address, appt.phone, appt.email, appt.status,
-             appt.appointment_date, appt.completed_date, appt.work_done),
+             appt.service_type, appt.appointment_date, appt.completed_date, appt.work_done),
         )
         return {"id": cur.lastrowid, **appt.model_dump()}
 
