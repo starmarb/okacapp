@@ -3,7 +3,7 @@ from contextlib import contextmanager
 
 DB_PATH = "business.db"
 
-STATUS_VALUES = ("scheduled", "in_progress", "completed", "cancelled")
+STATUS_VALUES = ("scheduled", "in_progress", "completed", "cancelled", "rescheduled")
 
 
 def init_db():
@@ -64,6 +64,21 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 appointment_id INTEGER NOT NULL,
                 storage_key TEXT NOT NULL,
+                FOREIGN KEY (appointment_id) REFERENCES appointments(id)
+            )
+        """)
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS invoices (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                appointment_id INTEGER NOT NULL UNIQUE,
+                total_service REAL DEFAULT 0,
+                total_parts REAL DEFAULT 0,
+                discount REAL DEFAULT 0,
+                subtotal REAL DEFAULT 0,
+                tax REAL DEFAULT 0,
+                total REAL DEFAULT 0,
+                warranty_extension_registered TEXT,
                 FOREIGN KEY (appointment_id) REFERENCES appointments(id)
             )
         """)

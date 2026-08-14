@@ -1,0 +1,544 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #f7f7f9;
+  color: #1a1a2e;
+}
+
+.dashboard-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px 40px;
+}
+
+.dashboard-topbar {
+  padding: 24px 0 16px;
+}
+
+.dashboard-brand {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #e5e5ea;
+}
+
+.dashboard-tabs a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  padding: 10px 18px;
+  border-bottom: 2px solid transparent;
+  font-size: 15px;
+}
+
+.dashboard-tabs a.active {
+  color: #1a1a2e;
+  border-bottom-color: #1a1a2e;
+}
+
+.dashboard-main {
+  min-height: 60vh;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.dashboard-header input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.empty-state {
+  color: #999;
+  font-size: 14px;
+}
+
+.readonly-text {
+  background: #f5f5f7;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.readonly-text.small {
+  font-size: 13px;
+  padding: 6px 10px;
+  background: none;
+  color: #666;
+}
+
+/* ---------- Appointments list ---------- */
+
+.appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dashboard-appointment-row {
+  border: 1px solid #e5e5ea;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.dashboard-appointment-summary {
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.dashboard-appointment-summary > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.dashboard-appointment-summary p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.dashboard-status-tag {
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: #f0f0f4;
+  color: #444;
+}
+
+.dashboard-appointment-detail {
+  padding: 0 16px 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.dashboard-appointment-detail h3 {
+  font-size: 15px;
+  margin: 16px 0 8px;
+}
+
+.dashboard-photo-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboard-photo-thumb {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e5e5ea;
+}
+
+/* ---------- Editable part row ---------- */
+
+.editable-part-row {
+  border: 1px solid #e5e5ea;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #fafafa;
+}
+
+.editable-part-header {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.part-count {
+  color: #888;
+  font-weight: 300;
+}
+
+.editable-part-fields {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editable-part-fields input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+/* ---------- Buttons (shared) ---------- */
+
+.primary-button {
+  padding: 12px 20px;
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+}
+
+.secondary-button {
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.secondary-button.small {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.icon-button-small {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #858585;
+  cursor: pointer;
+}
+
+/* ---------- Modal (edit appointment) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-panel {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-panel label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin: 10px 0 4px;
+}
+
+.modal-panel input,
+.modal-panel select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.modal-panel .primary-button {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.edit-note {
+  font-size: 12px;
+  color: #999;
+  margin: 4px 0 0;
+}
+
+/* ---------- Invoice ---------- */
+
+.invoice-appointment-summary {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.invoice-input-form {
+  background: white;
+  border: 1px solid #e5e5ea;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 420px;
+}
+
+.invoice-field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.invoice-field-row label {
+  font-size: 14px;
+  color: #444;
+}
+
+.invoice-field-row input {
+  width: 140px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: right;
+}
+
+.invoice-actions {
+  margin-bottom: 16px;
+}
+
+.generated-invoice h2 {
+  font-size: 17px;
+  margin: 24px 0 10px;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #e5e5ea;
+  padding: 8px 12px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.invoice-table th {
+  background: #f5f5f7;
+  font-weight: 600;
+}
+
+.invoice-total-row {
+  font-weight: 700;
+  background: #f5f5f7;
+}
+
+.invoice-scope-text {
+  background: white;
+  border: 1px solid #e5e5ea;
+  padding: 14px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+
+.warranty-extension-line {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ---------- Calendar ---------- */
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.calendar-nav button {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding: 6px 0;
+}
+
+.calendar-cell {
+  min-height: 110px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  background: white;
+}
+
+.calendar-cell.outside-month {
+  background: #fafafa;
+  color: #ccc;
+}
+
+.calendar-cell.is-today {
+  border-color: #1a1a2e;
+  border-width: 2px;
+}
+
+.calendar-cell.is-selected {
+  background: #eef;
+}
+
+.calendar-date-number {
+  font-size: 13px;
+}
+
+/* Each bar is a compressed stand-in for one of the technician's appointment
+   cards — same color coding, just visually condensed enough to fit several
+   per day. Hovering shows the full detail via the title attribute. */
+.calendar-bars {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+  align-items: flex-end;
+  height: 50px;
+}
+
+.calendar-bar {
+  width: 8px;
+  height: 100%;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.calendar-more {
+  font-size: 10px;
+  color: #999;
+  align-self: center;
+}
+
+.calendar-day-panel {
+  background: white;
+  border: 1px solid #e5e5ea;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.calendar-appointment-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-appointment-item .calendar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ---------- Saved confirmation ---------- */
+
+.saved-message {
+  color: #2e8b3d;
+  font-weight: 600;
+  font-size: 14px;
+  animation: fade-in-out 2.5s ease;
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.save-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* ---------- Error text (validation) ---------- */
+
+.error-text {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+/* ---------- Invoice: calculated total display (not an input) ---------- */
+
+.invoice-calculated-total {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.invoice-calculated-total label {
+  font-weight: 600;
+}
+
+.invoice-calculated-total span {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ---------- Print (PDF export) ---------- */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .dashboard-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .invoice-table {
+    break-inside: avoid;
+  }
+
+  body {
+    background: white;
+  }
+}

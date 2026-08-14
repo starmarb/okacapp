@@ -23,6 +23,7 @@ function hexToTintedBackground(hex) {
 export default function AppointmentCard({ appointment, onClick }) {
   const borderColor = SERVICE_COLORS[appointment.service_type] || "#ddd";
   const backgroundColor = hexToTintedBackground(borderColor);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(appointment.address)}`;
 
   return (
     <div
@@ -34,7 +35,15 @@ export default function AppointmentCard({ appointment, onClick }) {
         <strong>{formatTime(appointment.appointment_date)}</strong>
         <span className="service-type">{appointment.service_type}</span>
       </div>
-      <p>{appointment.address}</p>
+      <a
+        href={mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="address-link"
+        onClick={(e) => e.stopPropagation()} // don't also trigger the card's navigate-to-detail
+      >
+        {appointment.address}
+      </a>
       <p>{appointment.phone}</p>
     </div>
   );

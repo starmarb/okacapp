@@ -39,6 +39,11 @@ class PartInstanceIn(BaseModel):
     appointment_id: Optional[int] = None  # which appointment this specific unit was installed on
 
 
+class PartUpdate(BaseModel):
+    model_number: Optional[str] = None
+    warranty: Optional[str] = None
+
+
 class AppointmentIn(BaseModel):
     name: str
     address: Optional[str] = None
@@ -58,6 +63,16 @@ class AppointmentPartIn(BaseModel):
 
 class AppointmentPartUpdate(BaseModel):
     quantity: int
+
+
+class InvoiceIn(BaseModel):
+    total_service: float = 0
+    total_parts: float = 0
+    discount: float = 0
+    subtotal: float = 0
+    tax: float = 0
+    total: float = 0
+    warranty_extension_registered: Optional[str] = None
 
 
 class AppointmentUpdate(BaseModel):
@@ -109,6 +124,30 @@ async def get_part(part_id: int):
         result = dict(row)
         result["instances"] = [dict(i) for i in instances]
         return result
+
+
+@app.patch("/parts/{part_id}")
+async def update_part(part_id: int, update: PartUpdate):
+    """For the dashboard: filling in model_number/warranty info that the
+    technician didn't have on hand in the field. This DOES affect every
+    appointment referencing this part type — appropriate here, since
+    model_number/warranty are attributes of the part itself, not of a
+    particular appointment's usage (unlike quantity/serial numbers)."""
+    with get_db() as conn:
+        existing = conn.execute("SELECT * FROM parts WHERE id = ?", (part_id,)).fetchone()
+        if not existing:
+            raise HTTPException(status_code=404, detail="Part not found")
+
+        updates = update.model_dump(exclude_unset=True)
+        if not updates:
+            return dict(existing)
+
+        set_clause = ", ".join(f"{field} = ?" for field in updates)
+        values = list(updates.values()) + [part_id]
+        conn.execute(f"UPDATE parts SET {set_clause} WHERE id = ?", values)
+
+        updated = conn.execute("SELECT * FROM parts WHERE id = ?", (part_id,)).fetchone()
+        return dict(updated)
 
 
 @app.post("/parts/{part_id}/instances")
@@ -228,6 +267,17 @@ async def update_appointment(appointment_id: int, update: AppointmentUpdate):
         if not updates:
             return dict(existing)
 
+        # If the date is changing and the caller didn't also explicitly set a
+        # status in this same request, auto-mark it "rescheduled" — this is
+        # what the calendar/dashboard relies on to distinguish "moved" from
+        # "newly created" or "explicitly cancelled."
+        date_changed = (
+            "appointment_date" in updates
+            and updates["appointment_date"] != existing["appointment_date"]
+        )
+        if date_changed and "status" not in updates:
+            updates["status"] = "rescheduled"
+
         set_clause = ", ".join(f"{field} = ?" for field in updates)
         values = list(updates.values()) + [appointment_id]
         conn.execute(f"UPDATE appointments SET {set_clause} WHERE id = ?", values)
@@ -319,6 +369,46 @@ async def get_photo_signed_url(photo_id: int):
         if not row:
             raise HTTPException(status_code=404, detail="Photo not found")
         return {"url": get_photo_url(row["storage_key"])}
+
+
+# ---------- Invoices ----------
+
+@app.put("/appointments/{appointment_id}/invoice")
+async def upsert_invoice(appointment_id: int, invoice: InvoiceIn):
+    """Create or replace the invoice for this appointment — one invoice per
+    appointment, so this is always a full overwrite rather than a partial patch."""
+    with get_db() as conn:
+        appt = conn.execute("SELECT id FROM appointments WHERE id = ?", (appointment_id,)).fetchone()
+        if not appt:
+            raise HTTPException(status_code=404, detail="Appointment not found")
+
+        conn.execute(
+            """INSERT INTO invoices
+               (appointment_id, total_service, total_parts, discount, subtotal, tax, total, warranty_extension_registered)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(appointment_id) DO UPDATE SET
+                 total_service = excluded.total_service,
+                 total_parts = excluded.total_parts,
+                 discount = excluded.discount,
+                 subtotal = excluded.subtotal,
+                 tax = excluded.tax,
+                 total = excluded.total,
+                 warranty_extension_registered = excluded.warranty_extension_registered""",
+            (appointment_id, invoice.total_service, invoice.total_parts, invoice.discount,
+             invoice.subtotal, invoice.tax, invoice.total, invoice.warranty_extension_registered),
+        )
+        return {"appointment_id": appointment_id, **invoice.model_dump()}
+
+
+@app.get("/appointments/{appointment_id}/invoice")
+async def get_invoice(appointment_id: int):
+    with get_db() as conn:
+        row = conn.execute(
+            "SELECT * FROM invoices WHERE appointment_id = ?", (appointment_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="No invoice yet for this appointment")
+        return dict(row)
 
 
 @app.get("/")

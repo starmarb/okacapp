@@ -65,7 +65,14 @@ export default function AppointmentDetailPage() {
         <div>
           <strong className="detail-time">{formatDateTime(appointment.appointment_date)}</strong>
           <p className="detail-name">{appointment.name}</p>
-          <p>{appointment.address}</p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(appointment.address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="address-link"
+          >
+            {appointment.address}
+          </a>
           <p>{appointment.phone}</p>
         </div>
         <span className="service-badge" style={{ borderColor: accentColor, color: accentColor }}>
