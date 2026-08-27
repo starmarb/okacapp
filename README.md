@@ -102,24 +102,3 @@ npm run dev
 Runs on `http://127.0.0.1:5173`. Both servers need to be running simultaneously for the app to work — the frontend calls the backend directly over HTTP.
 
 ---
-
-## What's not built yet
-
-- **Object storage.** `storage.py` expects `AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, and `S3_BUCKET` as environment variables. Until these are set, the app works fully except for photo upload, which will fail loudly rather than silently. AWS setup is intentionally deferred until the frontend is closer to deploy-ready.
-- **Authentication.** None yet. Planned approach: a long-lived device token for the technician's single device (no login screen, since field access needs to be immediate), and Google Auth for the office dashboard, which will have multiple users.
-- **The office dashboard.** Everything above is the technician-facing mobile site only.
-- **Editing a part's brand/name.** Deliberately not allowed — `parts` is a shared catalog table, and letting one appointment's edit silently rewrite another appointment's historical part record would be a correctness bug, not a feature. Editing only touches quantity and serial numbers, both of which are specific to that one appointment's usage.
-- **CORS is wide open** (`allow_origins=["*"]`) for local development convenience. This needs to be locked down to the actual frontend domain before any real deployment.
-
----
-
-## Design notes
-
-Service type colors are defined once, in `AppointmentDetailPage.jsx` (`SERVICE_COLORS`), and imported by `AppointmentCard.jsx` — intentionally a single source of truth after the two drifted out of sync once already.
-
-| Type | Hex |
-|---|---|
-| 수리 (repair) | `#99B6C9` |
-| 설치 (installation) | `#A5C0A1` |
-| 공사 (construction) | `#C999AC` |
-| 기타 (other) | `#C9A799` |
