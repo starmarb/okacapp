@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { SERVICE_COLORS } from "../pages/AppointmentDetailPage";
 
 // Formats "2026-08-11T14:30" into "2:30PM" (matches the Figma design's format —
@@ -20,16 +21,54 @@ function hexToTintedBackground(hex) {
   return `rgba(${r}, ${g}, ${b}, 0.1)`;
 }
 
-export default function AppointmentCard({ appointment, onClick }) {
+const LONG_PRESS_MS = 500; // how long to hold before it counts as a long-press
+
+export default function AppointmentCard({ appointment, onClick, onLongPress }) {
   const borderColor = SERVICE_COLORS[appointment.service_type] || "#ddd";
   const backgroundColor = hexToTintedBackground(borderColor);
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(appointment.address)}`;
+
+  // A tap fires `onClick` (go to details); a hold fires `onLongPress` (edit).
+  const timerRef = useRef(null);
+  const longPressFired = useRef(false);
+
+  function startPress() {
+    longPressFired.current = false;
+    timerRef.current = setTimeout(() => {
+      longPressFired.current = true;
+      onLongPress?.();
+    }, LONG_PRESS_MS);
+  }
+
+  function cancelPress() {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }
+
+  function handleClick() {
+    // If the hold already triggered the edit modal, swallow the trailing click
+    // so we don't also navigate to the details page.
+    if (longPressFired.current) {
+      longPressFired.current = false;
+      return;
+    }
+    onClick?.();
+  }
 
   return (
     <div
       className="appointment-card"
       style={{ backgroundColor, borderColor }}
-      onClick={onClick}
+      onClick={handleClick}
+      onTouchStart={startPress}
+      onTouchEnd={cancelPress}
+      onTouchMove={cancelPress}
+      onMouseDown={startPress}
+      onMouseUp={cancelPress}
+      onMouseLeave={cancelPress}
+      onContextMenu={(e) => e.preventDefault()} // suppress the mobile long-press menu
     >
       <div className="appointment-card-header">
         <strong>{formatTime(appointment.appointment_date)}</strong>

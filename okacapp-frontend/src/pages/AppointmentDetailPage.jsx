@@ -61,6 +61,14 @@ export default function AppointmentDetailPage() {
 
   return (
     <div className="page detail-page">
+      <button
+        className="back-button"
+        onClick={() => navigate(-1)}
+        aria-label="뒤로 가기"
+      >
+        ←
+      </button>
+
       <div className="detail-header" style={{ borderBottomColor: accentColor }}>
         <div>
           <strong className="detail-time">{formatDateTime(appointment.appointment_date)}</strong>

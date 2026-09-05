@@ -7,13 +7,16 @@ import AppointmentCard from "../components/AppointmentCard";
 export default function SchedulePage() {
   const [appointments, setAppointments] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  // Holds the appointment being edited (via long-press); null when adding.
+  const [editingAppointment, setEditingAppointment] = useState(null);
   const navigate = useNavigate();
 
+  async function loadData() {
+    const data = await getAppointments();
+    setAppointments(data);
+  }
+
   useEffect(() => {
-    async function loadData() {
-      const data = await getAppointments();
-      setAppointments(data);
-    }
     loadData();
   }, []);
 
@@ -26,6 +29,15 @@ export default function SchedulePage() {
   const todayAppointments = appointments
     .filter((appt) => appt.appointment_date.startsWith(today))
     .sort((a, b) => a.appointment_date.localeCompare(b.appointment_date));
+
+  // Add and edit share one modal. It's open when adding OR when an appointment
+  // is selected for editing.
+  const modalOpen = showModal || editingAppointment;
+
+  function closeModal() {
+    setShowModal(false);
+    setEditingAppointment(null);
+  }
 
   return (
     <div className="page">
@@ -40,19 +52,17 @@ export default function SchedulePage() {
             key={appt.id}
             appointment={appt}
             onClick={() => navigate(`/appointments/${appt.id}`)}
+            onLongPress={() => setEditingAppointment(appt)}
           />
         ))}
       </div>
 
-      {showModal && (
+      {modalOpen && (
         <AddAppointmentModal
-          onClose={() => setShowModal(false)}
-          onCreated={() => {
-            setShowModal(false);
-            async function loadData() {
-              const data = await getAppointments();
-              setAppointments(data);
-            }
+          appointment={editingAppointment}
+          onClose={closeModal}
+          onSaved={() => {
+            closeModal();
             loadData();
           }}
         />

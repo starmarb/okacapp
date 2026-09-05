@@ -495,3 +495,116 @@ textarea {
   text-decoration-color: rgba(0, 0, 0, 0.25);
   display: block;
 }
+/* ---------- Additions ---------- */
+
+/* Required-field validation message — now shown in red. */
+.error-text {
+  color: #d92d20;
+  font-size: 13px;
+  margin: -4px 0 10px;
+}
+
+/* First dropdown (서비스): keeps the full-width bordered field, but the arrow
+   sits right next to the selected word instead of way out at the right edge.
+   The wrapper carries the box/border; the <select> shrinks to its own text and
+   carries the chevron on its right edge, so the arrow always hugs the word. */
+.modal-panel .service-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.modal-panel .service-select select {
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23858585' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding: 12px 34px 12px 12px; /* right padding leaves room for the arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Back arrow on the appointment detail page. */
+.back-button {
+  background: none;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  color: #1a1a2e;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin: 0 0 8px -8px; /* nudge to the left so it lines up with page content */
+}
+
+/* Long-press shouldn't select the card's text or pop the OS callout. */
+.appointment-card {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Delete control inside the edit modal (outlined danger button). */
+.delete-button {
+  width: 100%;
+  padding: 14px;
+  background: none;
+  color: #d92d20;
+  border: 1px solid #d92d20;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.delete-button:disabled {
+  opacity: 0.5;
+}
+
+.delete-trigger {
+  margin-top: 10px;
+}
+
+/* Two-step delete confirmation. */
+.delete-confirm {
+  margin-top: 10px;
+}
+
+.delete-confirm-text {
+  font-size: 15px;
+  color: #1a1a2e;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.delete-confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.delete-confirm-actions .delete-button,
+.delete-confirm-actions .delete-cancel-button {
+  flex: 1;
+  margin: 0;
+}
+
+.delete-cancel-button {
+  padding: 14px;
+  background: #f0f0f4;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
