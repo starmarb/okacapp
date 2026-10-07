@@ -1,0 +1,61 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Packaging / build ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Django ---
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+/static_root/
+local_settings.py
+
+# (Migrations are intentionally committed — do not ignore.)
+
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Tests / coverage ---
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+
+# --- Type checkers / linters ---
+.mypy_cache/
+.ruff_cache/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Editors / IDEs ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
