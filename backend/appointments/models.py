@@ -27,9 +27,9 @@ class ServiceType(models.TextChoices):
 
 class Appointment(models.Model):
     name = models.CharField(max_length=150)
-    address = models.TextField(null=True, blank=True)
-    phone = models.CharField(max_length=50, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    address = models.TextField(blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(blank=True)
     status = models.CharField(
         max_length=30,
         choices=AppointmentStatus.choices,
@@ -42,7 +42,10 @@ class Appointment(models.Model):
     )
     appointment_date = models.DateField()
     completed_date = models.DateField(null=True, blank=True)
-    work_done = models.TextField(null=True, blank=True)
+    work_done = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.name} — {self.appointment_date}"
 
     class Meta:
         ordering = ["appointment_date"]
@@ -58,8 +61,14 @@ class Invoice(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     warranty_extension = models.BooleanField()
 
+    def __str__(self):
+        return f"Invoice #{self.pk} — {self.appointment}"
+
 
 class Photo(models.Model):
     appointment = models.ForeignKey(to=Appointment, on_delete=models.CASCADE)
     storage_key = models.CharField(max_length=1024, unique=True)
     # later on we can store metadata as well if needed...?
+
+    def __str__(self):
+        return f"Photo #{self.pk} — {self.appointment}"

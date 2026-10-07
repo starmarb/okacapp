@@ -14,8 +14,23 @@ class Part(models.Model):
     model_number = models.CharField(max_length=100)
     warranty = models.DateField()
 
+    def __str__(self):
+        return f"{self.brand} {self.name} ({self.model_number})"
+
 
 class PartInstance(models.Model):
     part = ForeignKey(to=Part, on_delete=models.PROTECT)
-    assignment = ForeignKey(to=Appointment, on_delete=models.CASCADE)
-    serial_number = models.IntegerField()
+    appointment = ForeignKey(to=Appointment, on_delete=models.CASCADE)
+    serial_number = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["serial_number"],
+                condition=~models.Q(serial_number=""),
+                name="unique_serial_when_present",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.part} — {self.serial_number or '(no serial)'}"
