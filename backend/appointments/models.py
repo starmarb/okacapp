@@ -52,7 +52,7 @@ class Invoice(models.Model):
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     tax = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    warranty_extension = models.BooleanField()
+    warranty_extension = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Invoice #{self.pk} — {self.appointment}"
