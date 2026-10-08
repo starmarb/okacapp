@@ -8,3 +8,8 @@ dependencies = [
     "django>=6.1.2",
     "django-ninja>=1.7.1",
 ]
+
+[dependency-groups]
+dev = [
+    "django-stubs[compat]>=6.1.2",
+]

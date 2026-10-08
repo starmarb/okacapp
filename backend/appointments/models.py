@@ -5,17 +5,17 @@ from django.db import models
 
 
 class AppointmentStatus(models.TextChoices):
-    SCHEDULED = "SCHEDULED", "예약"  # type: ignore[Assignment]
-    IN_PROGRESS = "IN_PROGRESS", "진행중"  # type: ignore[Assignment]
-    COMPLETED = "COMPLETED", "완료"  # type: ignore[Assignment]
-    CANCELLED = "CANCELLED", "취소"  # type: ignore[Assignment]
+    SCHEDULED = "SCHEDULED", "예약"
+    IN_PROGRESS = "IN_PROGRESS", "진행중"
+    COMPLETED = "COMPLETED", "완료"
+    CANCELLED = "CANCELLED", "취소"
 
 
 class ServiceType(models.TextChoices):
-    REPAIR = "REPAIR", "수리"  # type: ignore[Assignment]
-    INSTALL = "INSTALL", "설치"  # type: ignore[Assignment]
-    CONSTRUCTION = "CONSTRUCTION", "공사"  # type: ignore[Assignment]
-    OTHER = "Other", "기타"  # type: ignore[Assignment]
+    REPAIR = "REPAIR", "수리"
+    INSTALL = "INSTALL", "설치"
+    CONSTRUCTION = "CONSTRUCTION", "공사"
+    OTHER = "Other", "기타"
 
 
 class Appointment(models.Model):
