@@ -4,15 +4,12 @@ from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 
-# to review:
-# 1. should warranty to be a date?
-
 
 class Part(models.Model):
     brand = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     model_number = models.CharField(max_length=100)
-    warranty = models.DateField()
+    warranty = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.brand} {self.name} ({self.model_number})"

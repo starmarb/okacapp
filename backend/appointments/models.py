@@ -3,19 +3,12 @@ from django.db import models
 # Create your models here.
 #
 
-# to review / reconsider
-# 1. which fields in Appointments are allowed to be empty
-# 2. if multiple invoices are allowed per appointment, and if so, we need a way to tell them apart
-# 3. on deletion of an appointment, should all invoices be deleted too? or no
-# 4. waranty extension, is it a boolean?
-
 
 class AppointmentStatus(models.TextChoices):
-    SCHEDULED = "SCHEDULED", "Scheduled"  # type: ignore[Assignment]
-    IN_PROGRESS = "IN_PROGRESS", "In_Progress"  # type: ignore[Assignment]
-    COMPLETED = "COMPLETED", "Completed"  # type: ignore[Assignment]
-    CANCELLED = "CANCELLED", "Cancelled"  # type: ignore[Assignment]
-    RESCHEDULED = "RESCHEDULED", "Rescheduled"  # type: ignore[Assignment]
+    SCHEDULED = "SCHEDULED", "예약"  # type: ignore[Assignment]
+    IN_PROGRESS = "IN_PROGRESS", "진행중"  # type: ignore[Assignment]
+    COMPLETED = "COMPLETED", "완료"  # type: ignore[Assignment]
+    CANCELLED = "CANCELLED", "취소"  # type: ignore[Assignment]
 
 
 class ServiceType(models.TextChoices):
