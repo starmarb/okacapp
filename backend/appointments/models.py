@@ -33,8 +33,8 @@ class Appointment(models.Model):
         choices=ServiceType.choices,
         default=ServiceType.OTHER,
     )
-    appointment_date = models.DateField()
-    completed_date = models.DateField(null=True, blank=True)
+    appointment_date = models.DateTimeField()
+    completed_date = models.DateTimeField(null=True, blank=True)
     work_done = models.TextField(blank=True)
 
     def __str__(self):
