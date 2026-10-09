@@ -1,0 +1,1209 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Okac API",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "paths": {
+    "/api/appointments/": {
+      "get": {
+        "operationId": "listAppointments",
+        "summary": "List Appointments",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedAppointmentOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "post": {
+        "operationId": "createAppointment",
+        "summary": "Create Appointment",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/appointments/{appointment_id}": {
+      "get": {
+        "operationId": "getAppointment",
+        "summary": "Get Appointment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      },
+      "put": {
+        "operationId": "updateAppointment",
+        "summary": "Update Appointment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/appointments/{appointment_id}/invoices": {
+      "get": {
+        "operationId": "listAppointmentInvoices",
+        "summary": "List Appointment Invoices",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceOut"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/appointments/invoices": {
+      "post": {
+        "operationId": "createInvoice",
+        "summary": "Create Invoice",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/appointments/invoices/{invoice_id}": {
+      "put": {
+        "operationId": "updateInvoice",
+        "summary": "Update Invoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoice_id",
+            "schema": {
+              "title": "Invoice Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceIn"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "get": {
+        "operationId": "getInvoice",
+        "summary": "Get Invoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoice_id",
+            "schema": {
+              "title": "Invoice Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/appointments/{appointment_id}/part_instances": {
+      "get": {
+        "operationId": "listAppointmentParts",
+        "summary": "List Appointment Parts",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PartInstanceOut"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/inventory/": {
+      "get": {
+        "operationId": "listParts",
+        "summary": "List Parts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedPartOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ]
+      },
+      "post": {
+        "operationId": "createPart",
+        "summary": "Create Part",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/inventory/{part_id}": {
+      "get": {
+        "operationId": "getPart",
+        "summary": "Get Part",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "part_id",
+            "schema": {
+              "title": "Part Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ]
+      },
+      "put": {
+        "operationId": "updatePart",
+        "summary": "Update Part",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "part_id",
+            "schema": {
+              "title": "Part Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/inventory/instances/{instance_id}": {
+      "get": {
+        "operationId": "getPartInstance",
+        "summary": "Get Part Instance",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instance_id",
+            "schema": {
+              "title": "Instance Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartInstanceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ]
+      },
+      "put": {
+        "operationId": "updatePartInstance",
+        "summary": "Update Part Instance",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instance_id",
+            "schema": {
+              "title": "Instance Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartInstanceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartInstanceIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/inventory/instances": {
+      "get": {
+        "operationId": "listPartInstances",
+        "summary": "List Part Instances",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedPartInstanceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ]
+      },
+      "post": {
+        "operationId": "createPartInstance",
+        "summary": "Create Part Instance",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartInstanceOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Inventory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartInstanceIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Input": {
+        "properties": {
+          "limit": {
+            "default": 100,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Offset",
+            "type": "integer"
+          }
+        },
+        "title": "Input",
+        "type": "object"
+      },
+      "AppointmentOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "ID"
+          },
+          "name": {
+            "maxLength": 150,
+            "title": "Name",
+            "type": "string"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "maxLength": 254,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "status": {
+            "default": "SCHEDULED",
+            "maxLength": 30,
+            "title": "Status",
+            "type": "string"
+          },
+          "service_type": {
+            "default": "Other",
+            "maxLength": 30,
+            "title": "Service Type",
+            "type": "string"
+          },
+          "appointment_date": {
+            "format": "date-time",
+            "title": "Appointment Date",
+            "type": "string"
+          },
+          "completed_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed Date"
+          },
+          "work_done": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Work Done"
+          }
+        },
+        "required": [
+          "name",
+          "appointment_date"
+        ],
+        "title": "AppointmentOut",
+        "type": "object"
+      },
+      "PagedAppointmentOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AppointmentOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "count"
+        ],
+        "title": "PagedAppointmentOut",
+        "type": "object"
+      },
+      "AppointmentIn": {
+        "properties": {
+          "name": {
+            "maxLength": 150,
+            "title": "Name",
+            "type": "string"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "maxLength": 254,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "status": {
+            "default": "SCHEDULED",
+            "maxLength": 30,
+            "title": "Status",
+            "type": "string"
+          },
+          "service_type": {
+            "default": "Other",
+            "maxLength": 30,
+            "title": "Service Type",
+            "type": "string"
+          },
+          "appointment_date": {
+            "format": "date-time",
+            "title": "Appointment Date",
+            "type": "string"
+          },
+          "completed_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed Date"
+          },
+          "work_done": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Work Done"
+          }
+        },
+        "required": [
+          "name",
+          "appointment_date"
+        ],
+        "title": "AppointmentIn",
+        "type": "object"
+      },
+      "InvoiceOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "ID"
+          },
+          "appointment": {
+            "title": "Appointment",
+            "type": "integer"
+          },
+          "total_service": {
+            "default": 0,
+            "title": "Total Service",
+            "type": "string"
+          },
+          "total_parts": {
+            "default": 0,
+            "title": "Total Parts",
+            "type": "string"
+          },
+          "discount": {
+            "default": 0,
+            "title": "Discount",
+            "type": "string"
+          },
+          "subtotal": {
+            "default": 0,
+            "title": "Subtotal",
+            "type": "string"
+          },
+          "tax": {
+            "default": 0,
+            "title": "Tax",
+            "type": "string"
+          },
+          "total": {
+            "default": 0,
+            "title": "Total",
+            "type": "string"
+          },
+          "warranty_extension": {
+            "default": false,
+            "title": "Warranty Extension",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "appointment"
+        ],
+        "title": "InvoiceOut",
+        "type": "object"
+      },
+      "InvoiceIn": {
+        "properties": {
+          "appointment_id": {
+            "title": "Appointment",
+            "type": "integer"
+          },
+          "total_service": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Total Service"
+          },
+          "total_parts": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Total Parts"
+          },
+          "discount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Discount"
+          },
+          "subtotal": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Subtotal"
+          },
+          "tax": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Tax"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 0,
+            "title": "Total"
+          },
+          "warranty_extension": {
+            "default": false,
+            "title": "Warranty Extension",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "appointment_id"
+        ],
+        "title": "InvoiceIn",
+        "type": "object"
+      },
+      "PartInstanceOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "ID"
+          },
+          "part": {
+            "title": "Part",
+            "type": "integer"
+          },
+          "appointment": {
+            "title": "Appointment",
+            "type": "integer"
+          },
+          "serial_number": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serial Number"
+          }
+        },
+        "required": [
+          "part",
+          "appointment"
+        ],
+        "title": "PartInstanceOut",
+        "type": "object"
+      },
+      "PagedPartOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PartOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "count"
+        ],
+        "title": "PagedPartOut",
+        "type": "object"
+      },
+      "PartOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "ID"
+          },
+          "brand": {
+            "maxLength": 50,
+            "title": "Brand",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 50,
+            "title": "Name",
+            "type": "string"
+          },
+          "model_number": {
+            "maxLength": 100,
+            "title": "Model Number",
+            "type": "string"
+          },
+          "warranty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warranty"
+          }
+        },
+        "required": [
+          "brand",
+          "name",
+          "model_number"
+        ],
+        "title": "PartOut",
+        "type": "object"
+      },
+      "PartIn": {
+        "properties": {
+          "brand": {
+            "maxLength": 50,
+            "title": "Brand",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 50,
+            "title": "Name",
+            "type": "string"
+          },
+          "model_number": {
+            "maxLength": 100,
+            "title": "Model Number",
+            "type": "string"
+          },
+          "warranty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warranty"
+          }
+        },
+        "required": [
+          "brand",
+          "name",
+          "model_number"
+        ],
+        "title": "PartIn",
+        "type": "object"
+      },
+      "PartInstanceIn": {
+        "properties": {
+          "part_id": {
+            "title": "Part",
+            "type": "integer"
+          },
+          "appointment_id": {
+            "title": "Appointment",
+            "type": "integer"
+          },
+          "serial_number": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serial Number"
+          }
+        },
+        "required": [
+          "part_id",
+          "appointment_id"
+        ],
+        "title": "PartInstanceIn",
+        "type": "object"
+      },
+      "PagedPartInstanceOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PartInstanceOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "count"
+        ],
+        "title": "PagedPartInstanceOut",
+        "type": "object"
+      }
+    }
+  },
+  "servers": []
+}
