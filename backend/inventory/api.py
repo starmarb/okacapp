@@ -10,24 +10,24 @@ from inventory.schemas import PartIn, PartInstanceIn, PartInstanceOut, PartOut
 router = Router(tags=["Inventory"])
 
 
-@router.get("/", response=list[PartOut])
+@router.get("/", response=list[PartOut], operation_id="listParts")
 @paginate
 def list_parts(request):
     return Part.objects.all()
 
 
-@router.get("/{part_id}", response=PartOut)
+@router.get("/{part_id}", response=PartOut, operation_id="getPart")
 def get_part(request, part_id: int):
     return get_object_or_404(Part, id=part_id)
 
 
-@router.post("/", response={HTTPStatus.CREATED: PartOut})
+@router.post("/", response={HTTPStatus.CREATED: PartOut}, operation_id="createPart")
 def create_part(request, payload: PartIn):
     part = Part.objects.create(**payload.model_dump())
     return Status(HTTPStatus.CREATED, part)
 
 
-@router.put("/{part_id}", response=PartOut)
+@router.put("/{part_id}", response=PartOut, operation_id="updatePart")
 def update_part(request, part_id: int, payload: PartIn):
     part = get_object_or_404(Part, id=part_id)
     for key, value in payload.model_dump(exclude_unset=True).items():
@@ -36,24 +36,36 @@ def update_part(request, part_id: int, payload: PartIn):
     return part
 
 
-@router.get("/instances/{instance_id}", response=PartInstanceOut)
+@router.get(
+    "/instances/{instance_id}", response=PartInstanceOut, operation_id="getPartInstance"
+)
 def get_part_instance(request, instance_id: int):
     return get_object_or_404(PartInstance, id=instance_id)
 
 
-@router.get("/instances", response=list[PartInstanceOut])
+@router.get(
+    "/instances", response=list[PartInstanceOut], operation_id="listPartInstances"
+)
 @paginate
 def list_part_instances(request):
     return PartInstance.objects.all()
 
 
-@router.post("/instances", response={HTTPStatus.CREATED: PartInstanceOut})
+@router.post(
+    "/instances",
+    response={HTTPStatus.CREATED: PartInstanceOut},
+    operation_id="createPartInstance",
+)
 def create_part_instance(request, payload: PartInstanceIn):
     part_instance = PartInstance.objects.create(**payload.model_dump())
     return Status(HTTPStatus.CREATED, part_instance)
 
 
-@router.put("/instances/{instance_id}", response=PartInstanceOut)
+@router.put(
+    "/instances/{instance_id}",
+    response=PartInstanceOut,
+    operation_id="updatePartInstance",
+)
 def update_part_instance(request, instance_id: int, payload: PartInstanceIn):
     part_instance = get_object_or_404(PartInstance, id=instance_id)
     for key, value in payload.model_dump(exclude_unset=True).items():
