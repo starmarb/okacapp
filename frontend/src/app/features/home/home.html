@@ -1,0 +1,11 @@
+@if (appointments.isLoading()) {
+  <p>Loading..</p>
+} @else if (appointments.error()) {
+  <p>failed to load appointments</p>
+} @else if (appointments.hasValue()) {
+  @for (appointment of appointments.value().items; track appointment.id) {
+    <app-appointment-card [appointment]="appointment" />
+  } @empty {
+    <p>no appointments yet</p>
+  }
+}
