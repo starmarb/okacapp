@@ -1,17 +1,17 @@
 <main class="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-6">
   <h1 class="text-lg font-bold">Appointments</h1>
 
-  @if (appointments.isLoading()) {
-    <p class="text-sm font-thin">Loading…</p>
-  } @else if (appointments.error()) {
-    <p class="text-sm font-thin">Failed to load appointments.</p>
-  } @else if (appointments.hasValue()) {
+  @defer (when appointments.hasValue()) {
     <div class="flex flex-col gap-4">
-      @for (appointment of appointments.value().items; track appointment.id) {
+      @for (appointment of appointments.value()!.items; track appointment.id) {
         <app-appointment-card [appointment]="appointment" />
       } @empty {
         <p class="text-sm font-thin">No appointments yet.</p>
       }
     </div>
+  } @placeholder {
+    <p class="text-sm font-thin">Loading…</p>
+  } @error {
+    <p class="text-sm font-thin">Failed to load appointments.</p>
   }
 </main>
