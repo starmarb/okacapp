@@ -1,3 +1,22 @@
 <div class="flex flex-col">
-  <h1>Appointment Details</h1>
+  @defer (when appointment.hasValue()) {
+    <h1 class="text-2xl font-semibold mt-3">Appointment Details</h1>
+    <div class="flex flex-col">
+      <div class="flex justify-between pt-2">
+        <p class="font-medium">
+          {{ appointment.value()!.appointment_date | date: 'MMM d h:mma' }}
+        </p>
+        <p class="font-thin">{{ appointment.value()!.service_type }}</p>
+      </div>
+      <a [href]="mapsUrl()" target="_blank" rel="noopener noreferrer" class="font-thin underline">{{
+        appointment.value()!.address
+      }}</a>
+      <p class="font-thin">{{ appointment.value()!.phone }}</p>
+    </div>
+    <hr class="mt-3" />
+  } @placeholder {
+    <p class="text-sm font-thin">Loading…</p>
+  } @error {
+    <p class="text-sm font-thin">Failed to load appointments.</p>
+  }
 </div>
