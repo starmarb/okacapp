@@ -4,9 +4,7 @@
   @defer (when appointments.hasValue()) {
     <div class="flex flex-col gap-4">
       @for (appointment of appointments.value()!.items; track appointment.id) {
-        <a [routerLink]="['/appointment', appointment.id]">
-          <app-appointment-card [appointment]="appointment" />
-        </a>
+        <app-appointment-card [appointment]="appointment" />
       } @empty {
         <p class="text-sm font-thin">No appointments yet.</p>
       }

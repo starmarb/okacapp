@@ -1,8 +1,11 @@
-<article class="flex w-full flex-col gap-1 rounded-lg border border-neutral-200 px-5 py-4 text-sm">
+<a
+  [routerLink]="['/appointment', appointment().id]"
+  class="flex w-full flex-col gap-1 rounded-lg border border-neutral-200 px-5 py-4 text-sm"
+>
   <div class="flex items-baseline gap-2 justify-between">
     <p class="font-bold">{{ appointment().appointment_date | date: 'short' }}</p>
     <p class="font-thin">{{ appointment().service_type }}</p>
   </div>
   <p class="font-thin">{{ appointment().address }}</p>
   <p class="font-thin">{{ appointment().phone }}</p>
-</article>
+</a>

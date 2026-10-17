@@ -3,10 +3,9 @@ import { Component, inject, signal } from '@angular/core';
 import { AppointmentsService } from '@app/api/services';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentCard } from './appointment-card/appointment-card';
-import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [AppointmentCard, RouterLink],
+  imports: [AppointmentCard],
   selector: 'app-home',
   templateUrl: './home.html',
 })
