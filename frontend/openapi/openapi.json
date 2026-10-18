@@ -646,6 +646,12 @@
       },
       "AppointmentOut": {
         "properties": {
+          "status": {
+            "$ref": "#/components/schemas/AppointmentStatus"
+          },
+          "service_type": {
+            "$ref": "#/components/schemas/ServiceType"
+          },
           "id": {
             "anyOf": [
               {
@@ -697,18 +703,6 @@
             ],
             "title": "Email"
           },
-          "status": {
-            "default": "SCHEDULED",
-            "maxLength": 30,
-            "title": "Status",
-            "type": "string"
-          },
-          "service_type": {
-            "default": "Other",
-            "maxLength": 30,
-            "title": "Service Type",
-            "type": "string"
-          },
           "appointment_date": {
             "format": "date-time",
             "title": "Appointment Date",
@@ -739,11 +733,23 @@
           }
         },
         "required": [
+          "status",
+          "service_type",
           "name",
           "appointment_date"
         ],
         "title": "AppointmentOut",
         "type": "object"
+      },
+      "AppointmentStatus": {
+        "enum": [
+          "SCHEDULED",
+          "IN_PROGRESS",
+          "COMPLETED",
+          "CANCELLED"
+        ],
+        "title": "AppointmentStatus",
+        "type": "string"
       },
       "PagedAppointmentOut": {
         "properties": {
@@ -766,8 +772,34 @@
         "title": "PagedAppointmentOut",
         "type": "object"
       },
+      "ServiceType": {
+        "enum": [
+          "REPAIR",
+          "INSTALL",
+          "CONSTRUCTION",
+          "OTHER"
+        ],
+        "title": "ServiceType",
+        "type": "string"
+      },
       "AppointmentIn": {
         "properties": {
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AppointmentStatus"
+              }
+            ],
+            "default": "SCHEDULED"
+          },
+          "service_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ServiceType"
+              }
+            ],
+            "default": "OTHER"
+          },
           "name": {
             "maxLength": 150,
             "title": "Name",
@@ -807,18 +839,6 @@
               }
             ],
             "title": "Email"
-          },
-          "status": {
-            "default": "SCHEDULED",
-            "maxLength": 30,
-            "title": "Status",
-            "type": "string"
-          },
-          "service_type": {
-            "default": "Other",
-            "maxLength": 30,
-            "title": "Service Type",
-            "type": "string"
           },
           "appointment_date": {
             "format": "date-time",

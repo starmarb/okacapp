@@ -15,7 +15,7 @@ class ServiceType(models.TextChoices):
     REPAIR = "REPAIR", "수리"
     INSTALL = "INSTALL", "설치"
     CONSTRUCTION = "CONSTRUCTION", "공사"
-    OTHER = "Other", "기타"
+    OTHER = "OTHER", "기타"
 
 
 class Appointment(models.Model):

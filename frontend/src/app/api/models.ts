@@ -3,6 +3,7 @@
 
 export type { AppointmentIn } from './models/appointment-in';
 export type { AppointmentOut } from './models/appointment-out';
+export type { AppointmentStatus } from './models/appointment-status';
 export type { InvoiceIn } from './models/invoice-in';
 export type { InvoiceOut } from './models/invoice-out';
 export type { PagedAppointmentOut } from './models/paged-appointment-out';
@@ -12,3 +13,4 @@ export type { PartIn } from './models/part-in';
 export type { PartInstanceIn } from './models/part-instance-in';
 export type { PartInstanceOut } from './models/part-instance-out';
 export type { PartOut } from './models/part-out';
+export type { ServiceType } from './models/service-type';
