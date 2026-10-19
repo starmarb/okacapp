@@ -9,7 +9,15 @@
       {{ appt.appointment_date | date: 'MMM d, h:mma' }}
     </p>
     @if (appt.address) {
-      <p class="truncate text-neutral-600">{{ appt.address }}</p>
+      <a
+        [href]="mapsHref"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="$event.stopPropagation()"
+        class="truncate text-neutral-600 hover:text-neutral-900 hover:underline underline"
+      >
+        {{ appt.address }}
+      </a>
     }
     @if (appt.phone) {
       <p class="text-neutral-600">{{ appt.phone }}</p>

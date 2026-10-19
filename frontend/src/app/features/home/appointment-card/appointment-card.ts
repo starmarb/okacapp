@@ -13,4 +13,9 @@ import { ServiceTypeBadge } from '@app/shared/service-type-badge/service-type-ba
 })
 export class AppointmentCard {
   readonly appointment = input.required<AppointmentOut>();
+
+  get mapsHref(): string {
+    const address = this.appointment().address ?? '';
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  }
 }
