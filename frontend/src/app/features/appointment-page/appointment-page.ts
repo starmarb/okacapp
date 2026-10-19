@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, input, inject, computed } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentsService } from '@app/api/services';
 
+import { ServiceTypeBadge } from '@app/shared/service-type-badge/service-type-badge';
+
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, ServiceTypeBadge],
   selector: 'app-appointment-page',
   styleUrl: './appointment-page.css',
   templateUrl: './appointment-page.html',

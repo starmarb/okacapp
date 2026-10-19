@@ -1,11 +1,20 @@
+@let appt = appointment();
+
 <a
-  [routerLink]="['/appointment', appointment().id]"
-  class="flex w-full flex-col gap-1 rounded-lg border border-neutral-200 px-5 py-4 text-sm"
+  [routerLink]="['/appointment', appt.id]"
+  class="flex w-full items-start justify-between gap-4 rounded-lg border border-neutral-200 px-5 py-4 text-sm hover:border-neutral-300 hover:bg-neutral-50"
 >
-  <div class="flex items-baseline gap-2 justify-between">
-    <p class="font-bold">{{ appointment().appointment_date | date: 'short' }}</p>
-    <p class="font-thin">{{ appointment().service_type }}</p>
+  <div class="flex min-w-0 flex-col gap-1">
+    <p class="font-semibold">
+      {{ appt.appointment_date | date: 'MMM d, h:mma' }}
+    </p>
+    @if (appt.address) {
+      <p class="truncate text-neutral-600">{{ appt.address }}</p>
+    }
+    @if (appt.phone) {
+      <p class="text-neutral-600">{{ appt.phone }}</p>
+    }
   </div>
-  <p class="font-thin">{{ appointment().address }}</p>
-  <p class="font-thin">{{ appointment().phone }}</p>
+
+  <app-service-type-badge [service_type]="appt.service_type" />
 </a>

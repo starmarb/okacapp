@@ -1,0 +1,21 @@
+@reference '../../../styles.css';
+
+.service-type-badge {
+  @apply inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-normal text-neutral-500;
+}
+
+.service-type-badge[data-service-type='REPAIR'] {
+  @apply text-blue-700;
+}
+
+.service-type-badge[data-service-type='INSTALL'] {
+  @apply text-green-700;
+}
+
+.service-type-badge[data-service-type='CONSTRUCTION'] {
+  @apply text-orange-700;
+}
+
+.service-type-badge[data-service-type='OTHER'] {
+  @apply text-purple-700;
+}
