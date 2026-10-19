@@ -2,7 +2,15 @@
   @defer (when appointment.hasValue()) {
     @let appt = appointment.value()!;
 
-    <h1 class="mt-1 mb-3 text-lg font-semibold flex justify-center">Appointment Details</h1>
+    <div class="mb-3 grid grid-cols-[1fr_auto_1fr] items-center">
+      <button mat-icon-button class="justify-self-start" routerLink="/">
+        <mat-icon fontIcon="arrow_back_ios" />
+      </button>
+      <h1 class="text-lg font-semibold">Appointment Details</h1>
+      <button mat-icon-button class="justify-self-end">
+        <mat-icon fontIcon="edit" />
+      </button>
+    </div>
 
     <app-appointment-card [appointment]="appt" />
   } @placeholder {

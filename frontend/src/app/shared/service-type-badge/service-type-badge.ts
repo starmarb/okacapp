@@ -1,9 +1,10 @@
 import { Component, computed, input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import type { ServiceType } from '@app/api/models';
-import { SERVICE_TYPE_LABELS } from '../appointment-labels';
+import { SERVICE_TYPE_ICONS, SERVICE_TYPE_LABELS } from '../appointment-labels';
 
 @Component({
-  imports: [],
+  imports: [MatIconModule],
   selector: 'app-service-type-badge',
   styleUrl: './service-type-badge.css',
   templateUrl: './service-type-badge.html',
@@ -11,4 +12,5 @@ import { SERVICE_TYPE_LABELS } from '../appointment-labels';
 export class ServiceTypeBadge {
   readonly service_type = input.required<ServiceType>();
   readonly label = computed(() => SERVICE_TYPE_LABELS[this.service_type()]);
+  readonly icon = computed(() => SERVICE_TYPE_ICONS[this.service_type()]);
 }

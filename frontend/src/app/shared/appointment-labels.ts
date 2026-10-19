@@ -6,3 +6,10 @@ export const SERVICE_TYPE_LABELS: Record<ServiceType, string> = {
   CONSTRUCTION: 'Construction',
   OTHER: 'Other',
 };
+
+export const SERVICE_TYPE_ICONS: Record<ServiceType, string> = {
+  REPAIR: 'build',
+  INSTALL: 'construction',
+  CONSTRUCTION: 'foundation',
+  OTHER: 'more_horiz',
+};
