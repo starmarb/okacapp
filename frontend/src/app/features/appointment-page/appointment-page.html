@@ -1,32 +1,10 @@
-<div class="flex flex-col">
+<div class="flex flex-col p-3">
   @defer (when appointment.hasValue()) {
     @let appt = appointment.value()!;
 
-    <h1 class="mt-3 text-2xl font-semibold">Appointment Details</h1>
+    <h1 class="mt-1 mb-3 text-lg font-semibold flex justify-center">Appointment Details</h1>
 
-    <div class="flex items-start justify-between gap-4 pt-2">
-      <div class="flex min-w-0 flex-col gap-1">
-        <p class="font-medium">
-          {{ appt.appointment_date | date: 'MMM d, h:mma' }}
-        </p>
-        @if (appt.address) {
-          <a
-            [href]="mapsUrl()"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="truncate text-neutral-600 underline"
-            >{{ appt.address }}</a
-          >
-        }
-        @if (appt.phone) {
-          <p class="text-neutral-600">{{ appt.phone }}</p>
-        }
-      </div>
-
-      <app-service-type-badge [service_type]="appt.service_type" />
-    </div>
-
-    <hr class="mt-3" />
+    <app-appointment-card [appointment]="appt" />
   } @placeholder {
     <p class="text-sm font-thin">Loading…</p>
   } @error {

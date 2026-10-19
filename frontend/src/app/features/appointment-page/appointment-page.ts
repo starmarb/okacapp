@@ -4,9 +4,10 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentsService } from '@app/api/services';
 
 import { ServiceTypeBadge } from '@app/shared/service-type-badge/service-type-badge';
+import { AppointmentCard } from '../home/appointment-card/appointment-card';
 
 @Component({
-  imports: [DatePipe, ServiceTypeBadge],
+  imports: [DatePipe, ServiceTypeBadge, AppointmentCard],
   selector: 'app-appointment-page',
   styleUrl: './appointment-page.css',
   templateUrl: './appointment-page.html',
