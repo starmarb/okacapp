@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 
 import { AppointmentsService } from '@app/api/services';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { AppointmentCard } from './appointment-card/appointment-card';
+import { AppointmentCard } from '@app/features/home/appointment-card/appointment-card';
 
 @Component({
   imports: [AppointmentCard],

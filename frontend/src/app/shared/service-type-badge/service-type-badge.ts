@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import type { ServiceType } from '@app/api/models';
-import { SERVICE_TYPE_ICONS, SERVICE_TYPE_LABELS } from '../appointment-labels';
+import { SERVICE_TYPE_ICONS, SERVICE_TYPE_LABELS } from '@app/shared/appointment-labels';
 
 @Component({
   imports: [MatIconModule],

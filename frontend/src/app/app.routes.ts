@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Shell } from './shell';
-import { Home } from './features/home/home';
-import { AppointmentPage } from './features/appointment-page/appointment-page';
+import { Shell } from '@app/shell';
+import { Home } from '@app/features/home/home';
+import { AppointmentPage } from '@app/features/appointment-page/appointment-page';
 
 export const routes: Routes = [
   {
