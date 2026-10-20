@@ -1,0 +1,47 @@
+<form [formRoot]="appointmentForm">
+  <div class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Service Type</mat-label>
+      <mat-select [formField]="appointmentForm.service_type">
+        @for (option of serviceTypeOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <div class="flex justify-between">
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Time</mat-label>
+        <input matInput [matTimepicker]="timePicker" />
+        <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
+        <mat-timepicker #timePicker [interval]="'15m'" />
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Date &amp; time</mat-label>
+      <input matInput type="datetime-local" [formField]="appointmentForm.appointment_date" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [formField]="appointmentForm.name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>address</mat-label>
+      <input matInput [formField]="appointmentForm.address" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>phone</mat-label>
+      <input matInput [formField]="appointmentForm.phone" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>email</mat-label>
+      <input matInput [formField]="appointmentForm.email" />
+    </mat-form-field>
+  </div>
+</form>

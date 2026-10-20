@@ -5,6 +5,8 @@ import { AppointmentsService } from '@app/api/services';
 import { AppointmentCard } from '@app/features/home/appointment-card/appointment-card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { AppointmentForm } from '../appointment-form/appointment-form';
 
 @Component({
   imports: [AppointmentCard, MatIconModule, RouterLink],
@@ -13,12 +15,13 @@ import { RouterLink } from '@angular/router';
   templateUrl: './appointment-page.html',
 })
 export class AppointmentPage {
-  private readonly appointmentsService = inject(AppointmentsService);
+  private _bottomSheet = inject(MatBottomSheet);
+  private readonly _appointmentsService = inject(AppointmentsService);
   readonly id = input.required<number>();
 
   readonly appointment = rxResource({
     params: () => this.id(),
-    stream: ({ params }) => this.appointmentsService.getAppointment({ appointment_id: params }),
+    stream: ({ params }) => this._appointmentsService.getAppointment({ appointment_id: params }),
   });
 
   readonly mapsUrl = computed(() => {
@@ -27,4 +30,13 @@ export class AppointmentPage {
       ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
       : null;
   });
+
+  openForm(): void {
+    let appointment = this.appointment.value();
+    if (!appointment) return;
+
+    this._bottomSheet.open(AppointmentForm, {
+      data: appointment,
+    });
+  }
 }
