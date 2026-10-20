@@ -3,8 +3,8 @@
 
 export interface PartOut {
   brand: string;
-  id?: (number | null);
+  id: number;
   model_number: string;
   name: string;
-  warranty?: (string | null);
+  warranty: string;
 }

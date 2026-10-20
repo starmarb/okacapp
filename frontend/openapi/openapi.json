@@ -653,59 +653,23 @@
             "$ref": "#/components/schemas/ServiceType"
           },
           "id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "ID"
-          },
-          "name": {
-            "maxLength": 150,
-            "title": "Name",
-            "type": "string"
+            "title": "Id",
+            "type": "integer"
           },
           "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address"
+            "title": "Address",
+            "type": "string"
           },
           "phone": {
-            "anyOf": [
-              {
-                "maxLength": 50,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Phone"
+            "title": "Phone",
+            "type": "string"
           },
           "email": {
-            "anyOf": [
-              {
-                "maxLength": 254,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email"
+            "title": "Email",
+            "type": "string"
           },
-          "appointment_date": {
-            "format": "date-time",
-            "title": "Appointment Date",
+          "work_done": {
+            "title": "Work Done",
             "type": "string"
           },
           "completed_date": {
@@ -720,21 +684,26 @@
             ],
             "title": "Completed Date"
           },
-          "work_done": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Work Done"
+          "name": {
+            "maxLength": 150,
+            "title": "Name",
+            "type": "string"
+          },
+          "appointment_date": {
+            "format": "date-time",
+            "title": "Appointment Date",
+            "type": "string"
           }
         },
         "required": [
           "status",
           "service_type",
+          "id",
+          "address",
+          "phone",
+          "email",
+          "work_done",
+          "completed_date",
           "name",
           "appointment_date"
         ],
@@ -800,45 +769,30 @@
             ],
             "default": "OTHER"
           },
+          "address": {
+            "default": "",
+            "title": "Address",
+            "type": "string"
+          },
+          "phone": {
+            "default": "",
+            "title": "Phone",
+            "type": "string"
+          },
+          "email": {
+            "default": "",
+            "title": "Email",
+            "type": "string"
+          },
+          "work_done": {
+            "default": "",
+            "title": "Work Done",
+            "type": "string"
+          },
           "name": {
             "maxLength": 150,
             "title": "Name",
             "type": "string"
-          },
-          "address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Address"
-          },
-          "phone": {
-            "anyOf": [
-              {
-                "maxLength": 50,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Phone"
-          },
-          "email": {
-            "anyOf": [
-              {
-                "maxLength": 254,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email"
           },
           "appointment_date": {
             "format": "date-time",
@@ -856,17 +810,6 @@
               }
             ],
             "title": "Completed Date"
-          },
-          "work_done": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Work Done"
           }
         },
         "required": [
@@ -879,57 +822,51 @@
       "InvoiceOut": {
         "properties": {
           "id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "ID"
-          },
-          "appointment": {
-            "title": "Appointment",
+            "title": "Id",
             "type": "integer"
           },
           "total_service": {
-            "default": 0,
             "title": "Total Service",
             "type": "string"
           },
           "total_parts": {
-            "default": 0,
             "title": "Total Parts",
             "type": "string"
           },
           "discount": {
-            "default": 0,
             "title": "Discount",
             "type": "string"
           },
           "subtotal": {
-            "default": 0,
             "title": "Subtotal",
             "type": "string"
           },
           "tax": {
-            "default": 0,
             "title": "Tax",
             "type": "string"
           },
           "total": {
-            "default": 0,
             "title": "Total",
             "type": "string"
           },
           "warranty_extension": {
-            "default": false,
             "title": "Warranty Extension",
             "type": "boolean"
+          },
+          "appointment": {
+            "title": "Appointment",
+            "type": "integer"
           }
         },
         "required": [
+          "id",
+          "total_service",
+          "total_parts",
+          "discount",
+          "subtotal",
+          "tax",
+          "total",
+          "warranty_extension",
           "appointment"
         ],
         "title": "InvoiceOut",
@@ -1028,15 +965,12 @@
       "PartInstanceOut": {
         "properties": {
           "id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "ID"
+            "title": "Id",
+            "type": "integer"
+          },
+          "serial_number": {
+            "title": "Serial Number",
+            "type": "string"
           },
           "part": {
             "title": "Part",
@@ -1045,21 +979,11 @@
           "appointment": {
             "title": "Appointment",
             "type": "integer"
-          },
-          "serial_number": {
-            "anyOf": [
-              {
-                "maxLength": 200,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Serial Number"
           }
         },
         "required": [
+          "id",
+          "serial_number",
           "part",
           "appointment"
         ],
@@ -1090,15 +1014,12 @@
       "PartOut": {
         "properties": {
           "id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "ID"
+            "title": "Id",
+            "type": "integer"
+          },
+          "warranty": {
+            "title": "Warranty",
+            "type": "string"
           },
           "brand": {
             "maxLength": 50,
@@ -1114,20 +1035,11 @@
             "maxLength": 100,
             "title": "Model Number",
             "type": "string"
-          },
-          "warranty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Warranty"
           }
         },
         "required": [
+          "id",
+          "warranty",
           "brand",
           "name",
           "model_number"
@@ -1137,6 +1049,11 @@
       },
       "PartIn": {
         "properties": {
+          "warranty": {
+            "default": "",
+            "title": "Warranty",
+            "type": "string"
+          },
           "brand": {
             "maxLength": 50,
             "title": "Brand",
@@ -1151,17 +1068,6 @@
             "maxLength": 100,
             "title": "Model Number",
             "type": "string"
-          },
-          "warranty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Warranty"
           }
         },
         "required": [
@@ -1174,6 +1080,11 @@
       },
       "PartInstanceIn": {
         "properties": {
+          "serial_number": {
+            "default": "",
+            "title": "Serial Number",
+            "type": "string"
+          },
           "part_id": {
             "title": "Part",
             "type": "integer"
@@ -1181,18 +1092,6 @@
           "appointment_id": {
             "title": "Appointment",
             "type": "integer"
-          },
-          "serial_number": {
-            "anyOf": [
-              {
-                "maxLength": 200,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Serial Number"
           }
         },
         "required": [

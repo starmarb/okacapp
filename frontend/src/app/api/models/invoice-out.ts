@@ -3,12 +3,12 @@
 
 export interface InvoiceOut {
   appointment: number;
-  discount?: string;
-  id?: (number | null);
-  subtotal?: string;
-  tax?: string;
-  total?: string;
-  total_parts?: string;
-  total_service?: string;
-  warranty_extension?: boolean;
+  discount: string;
+  id: number;
+  subtotal: string;
+  tax: string;
+  total: string;
+  total_parts: string;
+  total_service: string;
+  warranty_extension: boolean;
 }

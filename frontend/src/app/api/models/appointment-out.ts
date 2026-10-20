@@ -4,14 +4,14 @@
 import { AppointmentStatus } from '../models/appointment-status';
 import { ServiceType } from '../models/service-type';
 export interface AppointmentOut {
-  address?: (string | null);
+  address: string;
   appointment_date: string;
-  completed_date?: (string | null);
-  email?: (string | null);
-  id?: (number | null);
+  completed_date: (string | null);
+  email: string;
+  id: number;
   name: string;
-  phone?: (string | null);
+  phone: string;
   service_type: ServiceType;
   status: AppointmentStatus;
-  work_done?: (string | null);
+  work_done: string;
 }

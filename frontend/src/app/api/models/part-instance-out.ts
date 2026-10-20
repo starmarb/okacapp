@@ -3,7 +3,7 @@
 
 export interface PartInstanceOut {
   appointment: number;
-  id?: (number | null);
+  id: number;
   part: number;
-  serial_number?: (string | null);
+  serial_number: string;
 }

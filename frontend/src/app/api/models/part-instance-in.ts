@@ -4,5 +4,5 @@
 export interface PartInstanceIn {
   appointment_id: number;
   part_id: number;
-  serial_number?: (string | null);
+  serial_number?: string;
 }
