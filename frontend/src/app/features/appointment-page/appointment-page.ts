@@ -38,9 +38,14 @@ export class AppointmentPage {
     let appointment = this.appointment.value();
     if (!appointment) return;
 
-    this._bottomSheet.open(AppointmentForm, {
-      data: { mode: 'edit', appointment } satisfies AppointmentFormRequest,
-      disableClose: true,
-    });
+    this._bottomSheet
+      .open(AppointmentForm, {
+        data: { mode: 'edit', appointment } satisfies AppointmentFormRequest,
+        disableClose: true,
+      })
+      .afterDismissed()
+      .subscribe((saved) => {
+        if (saved) this.appointment.reload();
+      });
   }
 }
