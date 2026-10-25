@@ -10,8 +10,8 @@ import { AppointmentCard } from '@app/features/home/appointment-card/appointment
   templateUrl: './home.html',
 })
 export class Home {
-  private readonly appoinmentsService = inject(AppointmentsService);
+  private readonly _appointmentsService = inject(AppointmentsService);
   readonly appointments = rxResource({
-    stream: () => this.appoinmentsService.listAppointments(),
+    stream: () => this._appointmentsService.listAppointments(),
   });
 }

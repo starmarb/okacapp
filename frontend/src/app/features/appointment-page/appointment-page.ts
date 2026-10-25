@@ -6,7 +6,10 @@ import { AppointmentCard } from '@app/features/home/appointment-card/appointment
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { AppointmentForm } from '../appointment-form/appointment-form';
+import {
+  AppointmentForm,
+  AppointmentFormRequest,
+} from '@app/features/appointment-form/appointment-form';
 
 @Component({
   imports: [AppointmentCard, MatIconModule, RouterLink],
@@ -36,7 +39,8 @@ export class AppointmentPage {
     if (!appointment) return;
 
     this._bottomSheet.open(AppointmentForm, {
-      data: appointment,
+      data: { mode: 'edit', appointment } satisfies AppointmentFormRequest,
+      disableClose: true,
     });
   }
 }

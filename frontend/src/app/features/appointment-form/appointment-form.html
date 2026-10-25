@@ -1,47 +1,63 @@
-<form [formRoot]="appointmentForm">
-  <div class="flex flex-col">
+<form [formRoot]="appointmentForm" class="flex max-h-[85vh] flex-col">
+  <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2">
+    <h1 class="text-lg font-semibold">{{ formTitle() }}</h1>
+
     <mat-form-field>
-      <mat-label>Service Type</mat-label>
+      <mat-label>Service type</mat-label>
       <mat-select [formField]="appointmentForm.service_type">
-        @for (option of serviceTypeOptions; track option.value) {
-          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        @for (type of serviceTypes; track type) {
+          <mat-option [value]="type">{{ serviceTypeLabels[type] }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
-    <div class="flex justify-between">
-      <mat-form-field>
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="picker" />
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker touchUi #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Time</mat-label>
-        <input matInput [matTimepicker]="timePicker" />
-        <mat-timepicker-toggle matIconSuffix [for]="timePicker" />
-        <mat-timepicker #timePicker [interval]="'15m'" />
-      </mat-form-field>
-    </div>
+
     <mat-form-field>
       <mat-label>Date &amp; time</mat-label>
       <input matInput type="datetime-local" [formField]="appointmentForm.appointment_date" />
+      @if (appointmentForm.appointment_date().getError('required')) {
+        <mat-error>Date and time are required</mat-error>
+      }
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input matInput [formField]="appointmentForm.name" />
+      <input
+        matInput
+        autocomplete="name"
+        autocapitalize="words"
+        [formField]="appointmentForm.name"
+      />
+      @if (appointmentForm.name().getError('required')) {
+        <mat-error>Name is required</mat-error>
+      }
     </mat-form-field>
+
     <mat-form-field>
-      <mat-label>address</mat-label>
-      <input matInput [formField]="appointmentForm.address" />
+      <mat-label>Address</mat-label>
+      <input matInput autocomplete="street-address" [formField]="appointmentForm.address" />
     </mat-form-field>
+
     <mat-form-field>
-      <mat-label>phone</mat-label>
-      <input matInput [formField]="appointmentForm.phone" />
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" autocomplete="tel" [formField]="appointmentForm.phone" />
     </mat-form-field>
+
     <mat-form-field>
-      <mat-label>email</mat-label>
-      <input matInput [formField]="appointmentForm.email" />
+      <mat-label>Email</mat-label>
+      <input matInput type="email" autocomplete="email" [formField]="appointmentForm.email" />
     </mat-form-field>
+  </div>
+
+  <div class="form-actions flex flex-col gap-2 border-t border-neutral-200 px-4 pt-4">
+    <button
+      matButton="filled"
+      type="submit"
+      class="w-full"
+      [disabled]="appointmentForm().submitting()"
+      [showProgress]="appointmentForm().submitting()"
+    >
+      Save
+    </button>
+    <button matButton type="button" class="w-full" (click)="cancel()">Cancel</button>
   </div>
 </form>
