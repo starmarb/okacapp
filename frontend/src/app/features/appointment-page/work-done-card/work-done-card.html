@@ -1,12 +1,17 @@
-<div class="card flex items-center justify-center">
-  <mat-form-field>
-    <mat-label>Autosize textarea</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
+<div class="flex flex-col gap-4">
+  <div>
+    <div class="card flex flex-col p-2">
+      <mat-form-field floatLabel="always" appearance="outline" class="outline-field w-full">
+        <mat-label>Work done</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="3"
+          cdkAutosizeMaxRows="8"
+          placeholder="Add notes about the work performed…"
+        ></textarea>
+        <mat-hint align="end">Saved</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
 </div>

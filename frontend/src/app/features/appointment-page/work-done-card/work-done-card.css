@@ -1,0 +1,8 @@
+/* Outlined field: thin gray outline at rest, dark on hover and focus. */
+.outline-field {
+  --mat-form-field-outlined-outline-color: var(--color-neutral-300);
+  --mat-form-field-outlined-hover-outline-color: var(--color-neutral-900);
+  --mat-form-field-outlined-focus-outline-color: var(--color-neutral-900);
+  --mat-form-field-outlined-focus-label-text-color: var(--color-neutral-900);
+  --mat-form-field-outlined-caret-color: var(--color-neutral-900);
+}
