@@ -151,6 +151,46 @@
           },
           "required": true
         }
+      },
+      "patch": {
+        "operationId": "patchAppointment",
+        "summary": "Patch Appointment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentInPatch"
+              }
+            }
+          },
+          "required": true
+        }
       }
     },
     "/api/appointments/{appointment_id}/invoices": {
@@ -817,6 +857,111 @@
           "appointment_date"
         ],
         "title": "AppointmentIn",
+        "type": "object"
+      },
+      "AppointmentInPatch": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AppointmentStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "service_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServiceType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "work_done": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Work Done"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "appointment_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Appointment Date"
+          },
+          "completed_date": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed Date"
+          }
+        },
+        "title": "AppointmentInPatch",
         "type": "object"
       },
       "InvoiceOut": {

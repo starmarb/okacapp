@@ -3,6 +3,7 @@ from http import HTTPStatus
 from django.shortcuts import get_object_or_404
 from ninja import Router, Status
 from ninja.pagination import paginate
+from ninja.patch_dict import PatchDict
 
 from appointments.models import Appointment, Invoice, Photo
 from appointments.schemas import AppointmentIn, AppointmentOut, InvoiceIn, InvoiceOut
@@ -37,6 +38,17 @@ def create_appointment(request, payload: AppointmentIn):
 def update_appointment(request, appointment_id: int, payload: AppointmentIn):
     appointment = get_object_or_404(Appointment, id=appointment_id)
     for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(appointment, key, value)
+    appointment.save()
+    return appointment
+
+
+@router.patch(
+    "/{appointment_id}", response=AppointmentOut, operation_id="patchAppointment"
+)
+def patch_appointment(request, appointment_id: int, payload: PatchDict[AppointmentIn]):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    for key, value in payload.items():
         setattr(appointment, key, value)
     appointment.save()
     return appointment

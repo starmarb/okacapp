@@ -28,6 +28,8 @@ import { listAppointments } from '../fn/appointments/list-appointments';
 import { ListAppointments$Params } from '../fn/appointments/list-appointments';
 import { PagedAppointmentOut } from '../models/paged-appointment-out';
 import { PartInstanceOut } from '../models/part-instance-out';
+import { patchAppointment } from '../fn/appointments/patch-appointment';
+import { PatchAppointment$Params } from '../fn/appointments/patch-appointment';
 import { updateAppointment } from '../fn/appointments/update-appointment';
 import { UpdateAppointment$Params } from '../fn/appointments/update-appointment';
 import { updateInvoice } from '../fn/appointments/update-invoice';
@@ -174,6 +176,41 @@ export class AppointmentsService extends BaseService {
    */
   updateAppointment(params: UpdateAppointment$Params, context?: HttpContext): Observable<AppointmentOut> {
     const resp = this.updateAppointment$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<AppointmentOut>): AppointmentOut => r.body)
+    );
+  }
+
+  /** Path part for operation `patchAppointment()` */
+  static readonly PatchAppointmentPath = '/api/appointments/{appointment_id}';
+
+  /**
+   * Patch Appointment.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `patchAppointment()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchAppointment$Response(params: PatchAppointment$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentOut>> {
+    const obs = patchAppointment(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Patch Appointment.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `patchAppointment$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchAppointment(params: PatchAppointment$Params, context?: HttpContext): Observable<AppointmentOut> {
+    const resp = this.patchAppointment$Response(params, context);
     return resp.pipe(
       map((r: StrictHttpResponse<AppointmentOut>): AppointmentOut => r.body)
     );

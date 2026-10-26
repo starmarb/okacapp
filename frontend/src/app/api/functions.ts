@@ -9,6 +9,8 @@ export type { GetAppointment$Params as GetAppointment$Params } from './fn/appoin
 export { getAppointment as getAppointment } from './fn/appointments/get-appointment';
 export type { UpdateAppointment$Params as UpdateAppointment$Params } from './fn/appointments/update-appointment';
 export { updateAppointment as updateAppointment } from './fn/appointments/update-appointment';
+export type { PatchAppointment$Params as PatchAppointment$Params } from './fn/appointments/patch-appointment';
+export { patchAppointment as patchAppointment } from './fn/appointments/patch-appointment';
 export type { ListAppointmentInvoices$Params as ListAppointmentInvoices$Params } from './fn/appointments/list-appointment-invoices';
 export { listAppointmentInvoices as listAppointmentInvoices } from './fn/appointments/list-appointment-invoices';
 export type { CreateInvoice$Params as CreateInvoice$Params } from './fn/appointments/create-invoice';
