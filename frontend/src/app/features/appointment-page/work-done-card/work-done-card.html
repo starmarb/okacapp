@@ -5,12 +5,42 @@
         <mat-label>Work done</mat-label>
         <textarea
           matInput
+          [value]="work_done()"
+          (input)="onInput($event)"
+          (blur)="save()"
           cdkTextareaAutosize
           cdkAutosizeMinRows="3"
           cdkAutosizeMaxRows="8"
           placeholder="Add notes about the work performed…"
         ></textarea>
-        <mat-hint align="end">Saved</mat-hint>
+        <mat-hint align="end" aria-live="polite">
+          @switch (saveStatus()) {
+            @case ('pending') {
+              <span class="inline-flex items-center gap-1">
+                <mat-icon fontIcon="schedule" />
+                Unsaved
+              </span>
+            }
+            @case ('saving') {
+              <span class="inline-flex items-center gap-1">
+                <mat-icon fontIcon="progress_activity" class="animate-spin" />
+                Saving…
+              </span>
+            }
+            @case ('saved') {
+              <span class="inline-flex items-center gap-1">
+                <mat-icon fontIcon="check" />
+                Saved
+              </span>
+            }
+            @case ('error') {
+              <span class="inline-flex items-center gap-1 text-red-600">
+                <mat-icon fontIcon="error_outline" />
+                Couldn’t save
+              </span>
+            }
+          }
+        </mat-hint>
       </mat-form-field>
     </div>
   </div>
