@@ -2,7 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentsService } from '@app/api/services';
 
-import { AppointmentCard } from '@app/features/home/appointment-card/appointment-card';
+import { AppointmentCard } from '@app/shared/appointment-card/appointment-card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
