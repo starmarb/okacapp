@@ -10,9 +10,10 @@ import {
   AppointmentForm,
   AppointmentFormRequest,
 } from '@app/features/appointment-form/appointment-form';
+import { WorkDoneCard } from './work-done-card/work-done-card';
 
 @Component({
-  imports: [AppointmentCard, MatIconModule, RouterLink],
+  imports: [AppointmentCard, WorkDoneCard, MatIconModule, RouterLink],
   selector: 'app-appointment-page',
   styleUrl: './appointment-page.css',
   templateUrl: './appointment-page.html',
