@@ -1,0 +1,23 @@
+<mat-nav-list>
+  @if (appointment.address) {
+    <a
+      mat-list-item
+      [href]="mapsHref"
+      target="_blank"
+      rel="noopener noreferrer"
+      (click)="dismiss()"
+    >
+      <mat-icon matListItemIcon fontIcon="map" />
+      <span matListItemTitle>Open in Google Maps</span>
+      <span matListItemLine class="truncate">{{ appointment.address }}</span>
+    </a>
+  }
+
+  @if (appointment.phone) {
+    <a mat-list-item [href]="telHref" (click)="dismiss()">
+      <mat-icon matListItemIcon fontIcon="call" />
+      <span matListItemTitle>Call</span>
+      <span matListItemLine>{{ appointment.phone }}</span>
+    </a>
+  }
+</mat-nav-list>
