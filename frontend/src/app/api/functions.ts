@@ -21,6 +21,10 @@ export type { UpdateInvoice$Params as UpdateInvoice$Params } from './fn/appointm
 export { updateInvoice as updateInvoice } from './fn/appointments/update-invoice';
 export type { ListPartsUsed$Params as ListPartsUsed$Params } from './fn/appointments/list-parts-used';
 export { listPartsUsed as listPartsUsed } from './fn/appointments/list-parts-used';
+export type { AddPartUsed$Params as AddPartUsed$Params } from './fn/appointments/add-part-used';
+export { addPartUsed as addPartUsed } from './fn/appointments/add-part-used';
+export type { UpdatePartUsed$Params as UpdatePartUsed$Params } from './fn/appointments/update-part-used';
+export { updatePartUsed as updatePartUsed } from './fn/appointments/update-part-used';
 export type { ListParts$Params as ListParts$Params } from './fn/inventory/list-parts';
 export { listParts as listParts } from './fn/inventory/list-parts';
 export type { CreatePart$Params as CreatePart$Params } from './fn/inventory/create-part';

@@ -2,16 +2,20 @@
 
 <div class="flex items-center justify-between gap-3">
   <div class="min-w-0">
-    <p class="truncate text-sm font-medium">{{ row.part.name }}</p>
+    <p class="truncate text-sm font-medium">{{ row.part.name || row.part.model_number }}</p>
     <p class="truncate text-xs text-neutral-500">
-      {{ row.part.brand }} · {{ row.part.model_number }}
+      {{ row.part.brand
+      }}{{ row.part.name && row.part.model_number ? ' · ' + row.part.model_number : '' }}
     </p>
   </div>
-  <span
-    class="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600"
-  >
-    ×{{ row.quantity }}
-  </span>
+  <div class="flex shrink-0 items-center gap-1">
+    <span class="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600">
+      ×{{ row.quantity }}
+    </span>
+    <button mat-icon-button type="button" aria-label="Edit part" (click)="edit.emit()">
+      <mat-icon fontIcon="edit" />
+    </button>
+  </div>
 </div>
 
 @if (row.serial_numbers.length) {

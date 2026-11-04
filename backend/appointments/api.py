@@ -1,14 +1,16 @@
 from http import HTTPStatus
 
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from ninja import Router, Status
+from ninja.errors import HttpError
 from ninja.pagination import paginate
 from ninja.patch_dict import PatchDict
 
 from appointments.models import Appointment, Invoice, Photo
 from appointments.schemas import AppointmentIn, AppointmentOut, InvoiceIn, InvoiceOut
-from inventory.models import AppointmentPart
-from inventory.schemas import AppointmentPartOut
+from inventory.models import AppointmentPart, Part
+from inventory.schemas import AppointmentPartOut, PartUsedIn
 
 router = Router(tags=["Appointments"])
 
@@ -96,3 +98,121 @@ def list_parts_used(request, appointment_id: int):
     return AppointmentPart.objects.filter(appointment_id=appointment_id).select_related(
         "part"
     )
+
+
+def _get_or_create_part(*, brand: str, name: str, model_number: str) -> Part:
+    """Reuse an existing part when its identifier matches case-insensitively."""
+    existing = (
+        Part.objects.filter(
+            brand__iexact=brand,
+            name__iexact=name,
+            model_number__iexact=model_number,
+        )
+        .order_by("id")
+        .first()
+    )
+    if existing:
+        return existing
+    return Part.objects.create(brand=brand, name=name, model_number=model_number)
+
+
+def _merge_serials(existing: list[str], incoming: list[str]) -> list[str]:
+    merged = list(existing)
+    seen = {serial.casefold() for serial in existing}
+    for serial in incoming:
+        key = serial.casefold()
+        if key not in seen:
+            seen.add(key)
+            merged.append(serial)
+    return merged
+
+
+@router.post(
+    "/{appointment_id}/parts_used",
+    response=AppointmentPartOut,
+    operation_id="addPartUsed",
+)
+def add_part_used(request, appointment_id: int, payload: PartUsedIn):
+    """Add a part to an appointment, accumulating quantity and serials."""
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    with transaction.atomic():
+        part = _get_or_create_part(
+            brand=payload.brand,
+            name=payload.name,
+            model_number=payload.model_number,
+        )
+        row, created = AppointmentPart.objects.get_or_create(
+            appointment=appointment,
+            part=part,
+            defaults={
+                "quantity": payload.quantity,
+                "serial_numbers": payload.serial_numbers,
+            },
+        )
+        if not created:
+            row.quantity += payload.quantity
+            row.serial_numbers = _merge_serials(
+                row.serial_numbers, payload.serial_numbers
+            )
+            row.save(update_fields=["quantity", "serial_numbers"])
+
+    return row
+
+
+@router.patch(
+    "/{appointment_id}/parts_used/{appointment_part_id}",
+    response=AppointmentPartOut,
+    operation_id="updatePartUsed",
+)
+def update_part_used(
+    request,
+    appointment_id: int,
+    appointment_part_id: int,
+    payload: PartUsedIn,
+):
+    """Replace the quantity/serials of a part used, and optionally its identity.
+
+    Part details are shared across appointments, so editing them affects every
+    appointment that uses the same part.
+    """
+    get_object_or_404(Appointment, id=appointment_id)
+
+    with transaction.atomic():
+        row = get_object_or_404(
+            AppointmentPart, id=appointment_part_id, appointment_id=appointment_id
+        )
+        part = row.part
+
+        identity_changed = (
+            part.brand != payload.brand
+            or part.name != payload.name
+            or part.model_number != payload.model_number
+        )
+        if identity_changed:
+            conflict = (
+                AppointmentPart.objects.filter(
+                    appointment_id=appointment_id,
+                    part__brand__iexact=payload.brand,
+                    part__name__iexact=payload.name,
+                    part__model_number__iexact=payload.model_number,
+                )
+                .exclude(pk=row.pk)
+                .exists()
+            )
+            if conflict:
+                raise HttpError(
+                    409,
+                    "Another part on this appointment already has these details",
+                )
+
+            part.brand = payload.brand
+            part.name = payload.name
+            part.model_number = payload.model_number
+            part.save(update_fields=["brand", "name", "model_number"])
+
+        row.quantity = payload.quantity
+        row.serial_numbers = payload.serial_numbers
+        row.save(update_fields=["quantity", "serial_numbers"])
+
+    return row

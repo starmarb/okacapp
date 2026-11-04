@@ -1,1 +1,75 @@
-<p>part-form works!</p>
+<form [formRoot]="partForm" class="flex max-h-[85vh] flex-col">
+  <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2">
+    <h1 class="text-lg font-semibold">{{ title }}</h1>
+
+    <mat-form-field>
+      <mat-label>Brand</mat-label>
+      <input matInput autocapitalize="words" [formField]="partForm.brand" />
+      @if (partForm.brand().getError('required')) {
+        <mat-error>Brand is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Part name</mat-label>
+      <input matInput autocapitalize="words" [formField]="partForm.name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Model number</mat-label>
+      <input matInput autocapitalize="characters" [formField]="partForm.model_number" />
+      @if (!hasIdentifier()) {
+        <mat-hint>Enter a name or a model number</mat-hint>
+      }
+    </mat-form-field>
+
+    <div class="flex items-center justify-between px-1">
+      <span class="text-sm font-medium">How many used?</span>
+      <div class="flex items-center gap-1">
+        <button
+          mat-icon-button
+          type="button"
+          aria-label="Remove one"
+          [disabled]="formModel().serials.length <= 1"
+          (click)="removeSerial()"
+        >
+          <mat-icon fontIcon="remove" />
+        </button>
+        <span class="w-6 text-center text-sm tabular-nums">
+          {{ formModel().serials.length }}
+        </span>
+        <button mat-icon-button type="button" aria-label="Add one" (click)="addSerial()">
+          <mat-icon fontIcon="add" />
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      @for (serial of partForm.serials; track $index) {
+        <mat-form-field>
+          <mat-label>Serial {{ $index + 1 }}</mat-label>
+          <input matInput autocapitalize="characters" [formField]="serial" />
+        </mat-form-field>
+      }
+    </div>
+
+    @if (request.mode === 'edit') {
+      <p class="px-1 text-xs text-neutral-500">
+        Part details are shared — changing them updates every appointment using this part.
+      </p>
+    }
+  </div>
+
+  <div class="form-actions flex flex-col gap-2 border-t border-neutral-200 px-4 pt-4">
+    <button
+      matButton="filled"
+      type="submit"
+      class="w-full"
+      [disabled]="partForm().submitting() || !hasIdentifier()"
+      [showProgress]="partForm().submitting()"
+    >
+      Save
+    </button>
+    <button matButton type="button" class="w-full" (click)="cancel()">Cancel</button>
+  </div>
+</form>

@@ -1,0 +1,4 @@
+/* Keep the action buttons clear of the iOS home indicator. */
+.form-actions {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}

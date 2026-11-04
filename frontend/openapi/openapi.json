@@ -369,6 +369,101 @@
         ]
       }
     },
+    "/api/appointments/{appointment_id}/parts_used": {
+      "post": {
+        "operationId": "addPartUsed",
+        "summary": "Add Part Used",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentPartOut"
+                }
+              }
+            }
+          }
+        },
+        "description": "Add a part to an appointment, accumulating quantity and serials.",
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartUsedIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/appointments/{appointment_id}/parts_used/{appointment_part_id}": {
+      "patch": {
+        "operationId": "updatePartUsed",
+        "summary": "Update Part Used",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "appointment_part_id",
+            "schema": {
+              "title": "Appointment Part Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppointmentPartOut"
+                }
+              }
+            }
+          }
+        },
+        "description": "Replace the quantity/serials of a part used, and optionally its identity.\n\nPart details are shared across appointments, so editing them affects every\nappointment that uses the same part.",
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartUsedIn"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
     "/api/inventory/": {
       "get": {
         "operationId": "listParts",
@@ -1148,6 +1243,14 @@
             "title": "Id",
             "type": "integer"
           },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "model_number": {
+            "title": "Model Number",
+            "type": "string"
+          },
           "warranty": {
             "title": "Warranty",
             "type": "string"
@@ -1156,26 +1259,53 @@
             "maxLength": 50,
             "title": "Brand",
             "type": "string"
-          },
-          "name": {
-            "maxLength": 50,
-            "title": "Name",
-            "type": "string"
-          },
-          "model_number": {
-            "maxLength": 100,
-            "title": "Model Number",
-            "type": "string"
           }
         },
         "required": [
           "id",
-          "warranty",
-          "brand",
           "name",
-          "model_number"
+          "model_number",
+          "warranty",
+          "brand"
         ],
         "title": "PartOut",
+        "type": "object"
+      },
+      "PartUsedIn": {
+        "description": "Payload for adding or editing a part used on an appointment.",
+        "properties": {
+          "brand": {
+            "title": "Brand",
+            "type": "string"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "model_number": {
+            "default": "",
+            "title": "Model Number",
+            "type": "string"
+          },
+          "quantity": {
+            "default": 1,
+            "title": "Quantity",
+            "type": "integer"
+          },
+          "serial_numbers": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Serial Numbers",
+            "type": "array"
+          }
+        },
+        "required": [
+          "brand"
+        ],
+        "title": "PartUsedIn",
         "type": "object"
       },
       "PagedPartOut": {
@@ -1206,26 +1336,24 @@
             "title": "Warranty",
             "type": "string"
           },
-          "brand": {
-            "maxLength": 50,
-            "title": "Brand",
-            "type": "string"
-          },
           "name": {
-            "maxLength": 50,
+            "default": "",
             "title": "Name",
             "type": "string"
           },
           "model_number": {
-            "maxLength": 100,
+            "default": "",
             "title": "Model Number",
+            "type": "string"
+          },
+          "brand": {
+            "maxLength": 50,
+            "title": "Brand",
             "type": "string"
           }
         },
         "required": [
-          "brand",
-          "name",
-          "model_number"
+          "brand"
         ],
         "title": "PartIn",
         "type": "object"

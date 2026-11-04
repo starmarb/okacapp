@@ -8,12 +8,12 @@ from appointments.models import Appointment
 
 class Part(models.Model):
     brand = models.CharField(max_length=50)
-    name = models.CharField(max_length=50)
-    model_number = models.CharField(max_length=100)
+    name = models.CharField(max_length=50, blank=True)
+    model_number = models.CharField(max_length=100, blank=True)
     warranty = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.brand} {self.name} ({self.model_number})"
+        return f"{self.brand} {self.name or self.model_number}".strip()
 
 
 class AppointmentPart(models.Model):

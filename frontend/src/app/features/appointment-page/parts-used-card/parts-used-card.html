@@ -1,16 +1,16 @@
 <section class="card flex flex-col">
   <header class="flex items-center justify-between gap-2 border-b border-neutral-200 px-4 py-3">
-    <div>
-      <h2 class="text-base font-semibold">Parts Used</h2>
+    <h2 class="text-base font-semibold">Parts Used</h2>
+    <div class="flex items-center gap-1">
       @if (totalQuantity()) {
         <span class="text-xs text-neutral-500">
           {{ totalQuantity() }} {{ totalQuantity() === 1 ? 'part' : 'parts' }}
         </span>
       }
+      <button mat-icon-button type="button" aria-label="Add part" (click)="openCreate()">
+        <mat-icon fontIcon="add" />
+      </button>
     </div>
-    <button mat-icon-button>
-      <mat-icon fontIcon="add" (click)="openForm()" />
-    </button>
   </header>
 
   @if (parts.error()) {
@@ -22,7 +22,7 @@
   } @else {
     <div class="divide-y divide-neutral-200">
       @for (row of parts.value() ?? []; track row.id) {
-        <app-part-group [usage]="row" />
+        <app-part-group [usage]="row" (edit)="openEdit(row)" />
       }
     </div>
   }

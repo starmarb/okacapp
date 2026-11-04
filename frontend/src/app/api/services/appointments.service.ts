@@ -10,6 +10,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { addPartUsed } from '../fn/appointments/add-part-used';
+import { AddPartUsed$Params } from '../fn/appointments/add-part-used';
 import { AppointmentOut } from '../models/appointment-out';
 import { AppointmentPartOut } from '../models/appointment-part-out';
 import { createAppointment } from '../fn/appointments/create-appointment';
@@ -34,6 +36,8 @@ import { updateAppointment } from '../fn/appointments/update-appointment';
 import { UpdateAppointment$Params } from '../fn/appointments/update-appointment';
 import { updateInvoice } from '../fn/appointments/update-invoice';
 import { UpdateInvoice$Params } from '../fn/appointments/update-invoice';
+import { updatePartUsed } from '../fn/appointments/update-part-used';
+import { UpdatePartUsed$Params } from '../fn/appointments/update-part-used';
 
 @Injectable({ providedIn: 'root' })
 export class AppointmentsService extends BaseService {
@@ -388,6 +392,82 @@ export class AppointmentsService extends BaseService {
     const resp = this.listPartsUsed$Response(params, context);
     return resp.pipe(
       map((r: StrictHttpResponse<Array<AppointmentPartOut>>): Array<AppointmentPartOut> => r.body)
+    );
+  }
+
+  /** Path part for operation `addPartUsed()` */
+  static readonly AddPartUsedPath = '/api/appointments/{appointment_id}/parts_used';
+
+  /**
+   * Add Part Used.
+   *
+   * Add a part to an appointment, accumulating quantity and serials.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addPartUsed()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addPartUsed$Response(params: AddPartUsed$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentPartOut>> {
+    const obs = addPartUsed(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Add Part Used.
+   *
+   * Add a part to an appointment, accumulating quantity and serials.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addPartUsed$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addPartUsed(params: AddPartUsed$Params, context?: HttpContext): Observable<AppointmentPartOut> {
+    const resp = this.addPartUsed$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
+    );
+  }
+
+  /** Path part for operation `updatePartUsed()` */
+  static readonly UpdatePartUsedPath = '/api/appointments/{appointment_id}/parts_used/{appointment_part_id}';
+
+  /**
+   * Update Part Used.
+   *
+   * Replace the quantity/serials of a part used, and optionally its identity.
+   *
+   * Part details are shared across appointments, so editing them affects every
+   * appointment that uses the same part.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updatePartUsed()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updatePartUsed$Response(params: UpdatePartUsed$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentPartOut>> {
+    const obs = updatePartUsed(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Update Part Used.
+   *
+   * Replace the quantity/serials of a part used, and optionally its identity.
+   *
+   * Part details are shared across appointments, so editing them affects every
+   * appointment that uses the same part.
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updatePartUsed$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  updatePartUsed(params: UpdatePartUsed$Params, context?: HttpContext): Observable<AppointmentPartOut> {
+    const resp = this.updatePartUsed$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
     );
   }
 

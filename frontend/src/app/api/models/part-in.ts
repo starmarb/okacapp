@@ -3,7 +3,7 @@
 
 export interface PartIn {
   brand: string;
-  model_number: string;
-  name: string;
+  model_number?: string;
+  name?: string;
   warranty?: string;
 }
