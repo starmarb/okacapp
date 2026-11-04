@@ -27,7 +27,7 @@ import { ListAppointmentParts$Params } from '../fn/appointments/list-appointment
 import { listAppointments } from '../fn/appointments/list-appointments';
 import { ListAppointments$Params } from '../fn/appointments/list-appointments';
 import { PagedAppointmentOut } from '../models/paged-appointment-out';
-import { PartInstanceOut } from '../models/part-instance-out';
+import { PartInstanceWithPartOut } from '../models/part-instance-with-part-out';
 import { patchAppointment } from '../fn/appointments/patch-appointment';
 import { PatchAppointment$Params } from '../fn/appointments/patch-appointment';
 import { updateAppointment } from '../fn/appointments/update-appointment';
@@ -369,7 +369,7 @@ export class AppointmentsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  listAppointmentParts$Response(params: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartInstanceOut>>> {
+  listAppointmentParts$Response(params: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartInstanceWithPartOut>>> {
     const obs = listAppointmentParts(this.http, this.rootUrl, params, context);
     return obs;
   }
@@ -384,10 +384,10 @@ export class AppointmentsService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  listAppointmentParts(params: ListAppointmentParts$Params, context?: HttpContext): Observable<Array<PartInstanceOut>> {
+  listAppointmentParts(params: ListAppointmentParts$Params, context?: HttpContext): Observable<Array<PartInstanceWithPartOut>> {
     const resp = this.listAppointmentParts$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<Array<PartInstanceOut>>): Array<PartInstanceOut> => r.body)
+      map((r: StrictHttpResponse<Array<PartInstanceWithPartOut>>): Array<PartInstanceWithPartOut> => r.body)
     );
   }
 

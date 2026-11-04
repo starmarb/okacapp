@@ -1,0 +1,21 @@
+@let g = group();
+
+<div class="flex items-center justify-between gap-3">
+  <div class="min-w-0">
+    <p class="truncate text-sm font-medium">{{ g.part.name }}</p>
+    <p class="truncate text-xs text-neutral-500">{{ g.part.brand }} · {{ g.part.model_number }}</p>
+  </div>
+  <span
+    class="shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-600"
+  >
+    ×{{ g.instances.length }}
+  </span>
+</div>
+
+<ul class="mt-2 flex flex-wrap gap-1.5" aria-label="Serial numbers">
+  @for (instance of g.instances; track instance.id) {
+    <li class="rounded bg-neutral-50 px-2 py-0.5 font-mono text-xs text-neutral-600">
+      {{ instance.serial_number || 'No serial' }}
+    </li>
+  }
+</ul>

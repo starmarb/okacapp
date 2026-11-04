@@ -7,13 +7,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PartInstanceOut } from '../../models/part-instance-out';
+import { PartInstanceWithPartOut } from '../../models/part-instance-with-part-out';
 
 export interface ListAppointmentParts$Params {
   appointment_id: number;
 }
 
-export function listAppointmentParts(http: HttpClient, rootUrl: string, params: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartInstanceOut>>> {
+export function listAppointmentParts(http: HttpClient, rootUrl: string, params: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartInstanceWithPartOut>>> {
   const rb = new RequestBuilder(rootUrl, listAppointmentParts.PATH, 'get');
   if (params) {
     rb.path('appointment_id', params.appointment_id, {});
@@ -24,7 +24,7 @@ export function listAppointmentParts(http: HttpClient, rootUrl: string, params: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<PartInstanceOut>>;
+      return r as StrictHttpResponse<Array<PartInstanceWithPartOut>>;
     })
   );
 }

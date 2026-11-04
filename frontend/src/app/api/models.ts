@@ -13,5 +13,6 @@ export type { PagedPartOut } from './models/paged-part-out';
 export type { PartIn } from './models/part-in';
 export type { PartInstanceIn } from './models/part-instance-in';
 export type { PartInstanceOut } from './models/part-instance-out';
+export type { PartInstanceWithPartOut } from './models/part-instance-with-part-out';
 export type { PartOut } from './models/part-out';
 export type { ServiceType } from './models/service-type';

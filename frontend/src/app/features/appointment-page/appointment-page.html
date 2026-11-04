@@ -14,9 +14,7 @@
 
     <app-appointment-card [appointment]="appt" />
     <app-work-done-card [appointment]="appt" />
-    <div class="card flex flex-col">
-      <h1>Parts Used</h1>
-    </div>
+    <app-parts-used-card [appointmentId]="appt.id" />
   } @placeholder {
     <p class="text-sm font-thin">Loading…</p>
   } @error {

@@ -1,0 +1,24 @@
+<section class="card flex flex-col">
+  <header class="flex items-center justify-between gap-2 border-b border-neutral-200 px-4 py-3">
+    <h2 class="text-base font-semibold">Parts Used</h2>
+    @if (instanceCount()) {
+      <span class="text-xs text-neutral-500">
+        {{ instanceCount() }} {{ instanceCount() === 1 ? 'part' : 'parts' }}
+      </span>
+    }
+  </header>
+
+  @if (instances.error()) {
+    <p class="px-4 py-4 text-sm text-red-600">Couldn’t load parts.</p>
+  } @else if (!instances.hasValue()) {
+    <p class="px-4 py-4 text-sm text-neutral-500">Loading…</p>
+  } @else if (groups().length === 0) {
+    <p class="px-4 py-4 text-sm text-neutral-500">No parts recorded.</p>
+  } @else {
+    <div class="divide-y divide-neutral-200">
+      @for (group of groups(); track group.part.id) {
+        <app-part-group [group]="group" />
+      }
+    </div>
+  }
+</section>

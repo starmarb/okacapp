@@ -355,7 +355,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/PartInstanceOut"
+                    "$ref": "#/components/schemas/PartInstanceWithPartOut"
                   },
                   "title": "Response",
                   "type": "array"
@@ -1107,7 +1107,7 @@
         "title": "InvoiceIn",
         "type": "object"
       },
-      "PartInstanceOut": {
+      "PartInstanceWithPartOut": {
         "properties": {
           "id": {
             "title": "Id",
@@ -1118,8 +1118,7 @@
             "type": "string"
           },
           "part": {
-            "title": "Part",
-            "type": "integer"
+            "$ref": "#/components/schemas/PartOut"
           },
           "appointment": {
             "title": "Appointment",
@@ -1132,28 +1131,7 @@
           "part",
           "appointment"
         ],
-        "title": "PartInstanceOut",
-        "type": "object"
-      },
-      "PagedPartOut": {
-        "properties": {
-          "items": {
-            "items": {
-              "$ref": "#/components/schemas/PartOut"
-            },
-            "title": "Items",
-            "type": "array"
-          },
-          "count": {
-            "title": "Count",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "items",
-          "count"
-        ],
-        "title": "PagedPartOut",
+        "title": "PartInstanceWithPartOut",
         "type": "object"
       },
       "PartOut": {
@@ -1192,6 +1170,27 @@
         "title": "PartOut",
         "type": "object"
       },
+      "PagedPartOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PartOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "count"
+        ],
+        "title": "PagedPartOut",
+        "type": "object"
+      },
       "PartIn": {
         "properties": {
           "warranty": {
@@ -1221,6 +1220,34 @@
           "model_number"
         ],
         "title": "PartIn",
+        "type": "object"
+      },
+      "PartInstanceOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "serial_number": {
+            "title": "Serial Number",
+            "type": "string"
+          },
+          "part": {
+            "title": "Part",
+            "type": "integer"
+          },
+          "appointment": {
+            "title": "Appointment",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "serial_number",
+          "part",
+          "appointment"
+        ],
+        "title": "PartInstanceOut",
         "type": "object"
       },
       "PartInstanceIn": {

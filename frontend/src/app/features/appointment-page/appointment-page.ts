@@ -11,9 +11,10 @@ import {
   AppointmentFormRequest,
 } from '@app/features/appointment-form/appointment-form';
 import { WorkDoneCard } from './work-done-card/work-done-card';
+import { PartsUsedCard } from './parts-used-card/parts-used-card';
 
 @Component({
-  imports: [AppointmentCard, WorkDoneCard, MatIconModule, RouterLink],
+  imports: [AppointmentCard, WorkDoneCard, PartsUsedCard, MatIconModule, RouterLink],
   selector: 'app-appointment-page',
   styleUrl: './appointment-page.css',
   templateUrl: './appointment-page.html',
