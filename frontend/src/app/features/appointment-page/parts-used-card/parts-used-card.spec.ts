@@ -2,21 +2,22 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideApiConfiguration } from '@app/api/api-configuration';
-import { PartInstanceWithPartOut, PartOut } from '@app/api/models';
+import { AppointmentPartOut } from '@app/api/models';
 import { PartsUsedCard } from './parts-used-card';
 
-const part: PartOut = {
-  id: 7,
-  brand: 'Bosch',
-  name: 'Brake Pad',
-  model_number: 'BP-100',
-  warranty: '',
+const usage: AppointmentPartOut = {
+  id: 1,
+  appointment: 1,
+  quantity: 3,
+  serial_numbers: ['SN-0001'],
+  part: {
+    id: 7,
+    brand: 'Bosch',
+    name: 'Brake Pad',
+    model_number: 'BP-100',
+    warranty: '',
+  },
 };
-
-const instances: PartInstanceWithPartOut[] = [
-  { id: 1, part, appointment: 1, serial_number: 'SN-0001' },
-  { id: 2, part, appointment: 1, serial_number: 'SN-0002' },
-];
 
 describe('PartsUsedCard', () => {
   let component: PartsUsedCard;
@@ -37,13 +38,13 @@ describe('PartsUsedCard', () => {
 
   afterEach(() => httpMock.verify());
 
-  it('groups returned instances by part', async () => {
+  it('lists the parts used and sums their quantity', async () => {
     fixture.detectChanges();
 
-    httpMock.expectOne('/api/appointments/1/part_instances').flush([...instances, ...instances]);
+    httpMock.expectOne('/api/appointments/1/parts').flush([usage]);
     await fixture.whenStable();
 
-    expect(component.groups()).toHaveLength(1);
-    expect(component.groups()[0].instances).toHaveLength(4);
+    expect(component.parts.value()).toHaveLength(1);
+    expect(component.totalQuantity()).toBe(3);
   });
 });

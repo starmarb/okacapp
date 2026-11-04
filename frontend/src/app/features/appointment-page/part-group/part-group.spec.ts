@@ -1,21 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PartInstanceWithPartOut, PartOut } from '@app/api/models';
-import { PartGroup, PartUsageGroup } from './part-group';
+import { AppointmentPartOut } from '@app/api/models';
+import { PartGroup } from './part-group';
 
-const part: PartOut = {
-  id: 7,
-  brand: 'Bosch',
-  name: 'Brake Pad',
-  model_number: 'BP-100',
-  warranty: '12 months',
-};
-
-const group: PartUsageGroup = {
-  part,
-  instances: [
-    { id: 1, part, appointment: 1, serial_number: 'SN-0001' },
-    { id: 2, part, appointment: 1, serial_number: '' } satisfies PartInstanceWithPartOut,
-  ],
+const usage: AppointmentPartOut = {
+  id: 1,
+  appointment: 1,
+  quantity: 2,
+  serial_numbers: ['SN-0001', 'SN-0002'],
+  part: {
+    id: 7,
+    brand: 'Bosch',
+    name: 'Brake Pad',
+    model_number: 'BP-100',
+    warranty: '12 months',
+  },
 };
 
 describe('PartGroup', () => {
@@ -28,7 +26,7 @@ describe('PartGroup', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(PartGroup);
-    fixture.componentRef.setInput('group', group);
+    fixture.componentRef.setInput('usage', usage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -37,13 +35,14 @@ describe('PartGroup', () => {
     expect(component).toBeTruthy();
   });
 
-  it('renders the part details and one entry per instance', () => {
+  it('renders the part details, quantity and serials', () => {
     const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
 
     expect(text).toContain('Brake Pad');
     expect(text).toContain('Bosch');
     expect(text).toContain('BP-100');
+    expect(text).toContain('×2');
     expect(text).toContain('SN-0001');
-    expect(text).toContain('No serial');
+    expect(text).toContain('SN-0002');
   });
 });

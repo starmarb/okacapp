@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Part, PartInstance
+from .models import AppointmentPart, Part
 
 
-class PartInstanceInline(admin.TabularInline):
-    model = PartInstance
+class AppointmentPartInline(admin.TabularInline):
+    model = AppointmentPart
     extra = 0
     autocomplete_fields = ("appointment",)
 
@@ -14,15 +14,14 @@ class PartAdmin(admin.ModelAdmin):
     list_display = ("brand", "name", "model_number", "warranty")
     list_filter = ("brand",)
     search_fields = ("brand", "name", "model_number")
-    inlines = (PartInstanceInline,)
+    inlines = (AppointmentPartInline,)
 
 
-@admin.register(PartInstance)
-class PartInstanceAdmin(admin.ModelAdmin):
-    list_display = ("id", "part", "appointment", "serial_number")
+@admin.register(AppointmentPart)
+class AppointmentPartAdmin(admin.ModelAdmin):
+    list_display = ("id", "part", "appointment", "quantity", "serial_numbers")
     list_filter = ("part__brand",)
     search_fields = (
-        "serial_number",
         "part__name",
         "part__model_number",
         "appointment__name",

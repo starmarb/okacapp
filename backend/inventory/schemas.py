@@ -1,6 +1,6 @@
 from ninja import ModelSchema
 
-from inventory.models import Part, PartInstance
+from inventory.models import AppointmentPart, Part
 
 
 class PartIn(ModelSchema):
@@ -25,31 +25,25 @@ class PartOut(ModelSchema):
         fields = "__all__"
 
 
-class PartInstanceIn(ModelSchema):
-    serial_number: str = ""
+class AppointmentPartIn(ModelSchema):
+    quantity: int = 1
+    serial_numbers: list[str] = []
 
     class Meta:
-        model = PartInstance
+        model = AppointmentPart
         exclude = ["id"]
 
 
-class PartInstanceOut(ModelSchema):
+class AppointmentPartOut(ModelSchema):
+    # One row per (part, appointment). `part` is embedded so a single request is
+    # enough to render the "parts used" list; remember to `.select_related("part")`
+    # the queryset or serializing dereferences the FK once per row (N+1).
     id: int
-    serial_number: str
-
-    class Meta:
-        model = PartInstance
-        fields = "__all__"
-
-
-class PartInstanceWithPartOut(ModelSchema):
-    # Embeds the full Part so a single request is enough to group instances by
-    # part. Remember to `.select_related("part")` the queryset, or serializing
-    # will dereference the FK once per row (N+1).
-    id: int
-    serial_number: str
     part: PartOut
+    quantity: int
+    serial_numbers: list[str]
+    appointment: int
 
     class Meta:
-        model = PartInstance
+        model = AppointmentPart
         fields = "__all__"

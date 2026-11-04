@@ -333,10 +333,10 @@
         ]
       }
     },
-    "/api/appointments/{appointment_id}/part_instances": {
+    "/api/appointments/{appointment_id}/parts": {
       "get": {
-        "operationId": "listAppointmentParts",
-        "summary": "List Appointment Parts",
+        "operationId": "listPartsUsed",
+        "summary": "List Parts Used",
         "parameters": [
           {
             "in": "path",
@@ -355,7 +355,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/PartInstanceWithPartOut"
+                    "$ref": "#/components/schemas/AppointmentPartOut"
                   },
                   "title": "Response",
                   "type": "array"
@@ -516,16 +516,16 @@
         }
       }
     },
-    "/api/inventory/instances/{instance_id}": {
+    "/api/inventory/appointment_parts/{appointment_part_id}": {
       "get": {
-        "operationId": "getPartInstance",
-        "summary": "Get Part Instance",
+        "operationId": "getAppointmentPart",
+        "summary": "Get Appointment Part",
         "parameters": [
           {
             "in": "path",
-            "name": "instance_id",
+            "name": "appointment_part_id",
             "schema": {
-              "title": "Instance Id",
+              "title": "Appointment Part Id",
               "type": "integer"
             },
             "required": true
@@ -537,7 +537,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartInstanceOut"
+                  "$ref": "#/components/schemas/AppointmentPartOut"
                 }
               }
             }
@@ -548,14 +548,14 @@
         ]
       },
       "put": {
-        "operationId": "updatePartInstance",
-        "summary": "Update Part Instance",
+        "operationId": "updateAppointmentPart",
+        "summary": "Update Appointment Part",
         "parameters": [
           {
             "in": "path",
-            "name": "instance_id",
+            "name": "appointment_part_id",
             "schema": {
-              "title": "Instance Id",
+              "title": "Appointment Part Id",
               "type": "integer"
             },
             "required": true
@@ -567,7 +567,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartInstanceOut"
+                  "$ref": "#/components/schemas/AppointmentPartOut"
                 }
               }
             }
@@ -580,7 +580,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartInstanceIn"
+                "$ref": "#/components/schemas/AppointmentPartIn"
               }
             }
           },
@@ -588,10 +588,10 @@
         }
       }
     },
-    "/api/inventory/instances": {
+    "/api/inventory/appointment_parts": {
       "get": {
-        "operationId": "listPartInstances",
-        "summary": "List Part Instances",
+        "operationId": "listAppointmentParts",
+        "summary": "List Appointment Parts",
         "parameters": [
           {
             "in": "query",
@@ -622,7 +622,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedPartInstanceOut"
+                  "$ref": "#/components/schemas/PagedAppointmentPartOut"
                 }
               }
             }
@@ -633,8 +633,8 @@
         ]
       },
       "post": {
-        "operationId": "createPartInstance",
-        "summary": "Create Part Instance",
+        "operationId": "createAppointmentPart",
+        "summary": "Create Appointment Part",
         "parameters": [],
         "responses": {
           "201": {
@@ -642,7 +642,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartInstanceOut"
+                  "$ref": "#/components/schemas/AppointmentPartOut"
                 }
               }
             }
@@ -655,7 +655,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartInstanceIn"
+                "$ref": "#/components/schemas/AppointmentPartIn"
               }
             }
           },
@@ -1107,18 +1107,25 @@
         "title": "InvoiceIn",
         "type": "object"
       },
-      "PartInstanceWithPartOut": {
+      "AppointmentPartOut": {
         "properties": {
           "id": {
             "title": "Id",
             "type": "integer"
           },
-          "serial_number": {
-            "title": "Serial Number",
-            "type": "string"
-          },
           "part": {
             "$ref": "#/components/schemas/PartOut"
+          },
+          "quantity": {
+            "title": "Quantity",
+            "type": "integer"
+          },
+          "serial_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Serial Numbers",
+            "type": "array"
           },
           "appointment": {
             "title": "Appointment",
@@ -1127,11 +1134,12 @@
         },
         "required": [
           "id",
-          "serial_number",
           "part",
+          "quantity",
+          "serial_numbers",
           "appointment"
         ],
-        "title": "PartInstanceWithPartOut",
+        "title": "AppointmentPartOut",
         "type": "object"
       },
       "PartOut": {
@@ -1222,40 +1230,20 @@
         "title": "PartIn",
         "type": "object"
       },
-      "PartInstanceOut": {
+      "AppointmentPartIn": {
         "properties": {
-          "id": {
-            "title": "Id",
+          "quantity": {
+            "default": 1,
+            "title": "Quantity",
             "type": "integer"
           },
-          "serial_number": {
-            "title": "Serial Number",
-            "type": "string"
-          },
-          "part": {
-            "title": "Part",
-            "type": "integer"
-          },
-          "appointment": {
-            "title": "Appointment",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "id",
-          "serial_number",
-          "part",
-          "appointment"
-        ],
-        "title": "PartInstanceOut",
-        "type": "object"
-      },
-      "PartInstanceIn": {
-        "properties": {
-          "serial_number": {
-            "default": "",
-            "title": "Serial Number",
-            "type": "string"
+          "serial_numbers": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Serial Numbers",
+            "type": "array"
           },
           "part_id": {
             "title": "Part",
@@ -1270,14 +1258,14 @@
           "part_id",
           "appointment_id"
         ],
-        "title": "PartInstanceIn",
+        "title": "AppointmentPartIn",
         "type": "object"
       },
-      "PagedPartInstanceOut": {
+      "PagedAppointmentPartOut": {
         "properties": {
           "items": {
             "items": {
-              "$ref": "#/components/schemas/PartInstanceOut"
+              "$ref": "#/components/schemas/AppointmentPartOut"
             },
             "title": "Items",
             "type": "array"
@@ -1291,7 +1279,7 @@
           "items",
           "count"
         ],
-        "title": "PagedPartInstanceOut",
+        "title": "PagedAppointmentPartOut",
         "type": "object"
       }
     }

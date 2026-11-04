@@ -1,6 +1,7 @@
-from appointments.models import Appointment
 from django.db import models
 from django.db.models.fields.related import ForeignKey
+
+from appointments.models import Appointment
 
 # Create your models here.
 
@@ -15,19 +16,19 @@ class Part(models.Model):
         return f"{self.brand} {self.name} ({self.model_number})"
 
 
-class PartInstance(models.Model):
+class AppointmentPart(models.Model):
     part = ForeignKey(to=Part, on_delete=models.PROTECT)
     appointment = ForeignKey(to=Appointment, on_delete=models.CASCADE)
-    serial_number = models.CharField(max_length=200, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    serial_numbers = models.JSONField(default=list, blank=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["serial_number"],
-                condition=~models.Q(serial_number=""),
-                name="unique_serial_when_present",
+                fields=["part", "appointment"],
+                name="unique_part_per_appointment",
             )
         ]
 
     def __str__(self):
-        return f"{self.part} — {self.serial_number or '(no serial)'}"
+        return f"{self.part} ×{self.quantity} — {self.appointment}"

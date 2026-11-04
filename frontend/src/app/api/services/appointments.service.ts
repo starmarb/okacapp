@@ -11,6 +11,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
 import { AppointmentOut } from '../models/appointment-out';
+import { AppointmentPartOut } from '../models/appointment-part-out';
 import { createAppointment } from '../fn/appointments/create-appointment';
 import { CreateAppointment$Params } from '../fn/appointments/create-appointment';
 import { createInvoice } from '../fn/appointments/create-invoice';
@@ -22,12 +23,11 @@ import { GetInvoice$Params } from '../fn/appointments/get-invoice';
 import { InvoiceOut } from '../models/invoice-out';
 import { listAppointmentInvoices } from '../fn/appointments/list-appointment-invoices';
 import { ListAppointmentInvoices$Params } from '../fn/appointments/list-appointment-invoices';
-import { listAppointmentParts } from '../fn/appointments/list-appointment-parts';
-import { ListAppointmentParts$Params } from '../fn/appointments/list-appointment-parts';
 import { listAppointments } from '../fn/appointments/list-appointments';
 import { ListAppointments$Params } from '../fn/appointments/list-appointments';
+import { listPartsUsed } from '../fn/appointments/list-parts-used';
+import { ListPartsUsed$Params } from '../fn/appointments/list-parts-used';
 import { PagedAppointmentOut } from '../models/paged-appointment-out';
-import { PartInstanceWithPartOut } from '../models/part-instance-with-part-out';
 import { patchAppointment } from '../fn/appointments/patch-appointment';
 import { PatchAppointment$Params } from '../fn/appointments/patch-appointment';
 import { updateAppointment } from '../fn/appointments/update-appointment';
@@ -356,38 +356,38 @@ export class AppointmentsService extends BaseService {
     );
   }
 
-  /** Path part for operation `listAppointmentParts()` */
-  static readonly ListAppointmentPartsPath = '/api/appointments/{appointment_id}/part_instances';
+  /** Path part for operation `listPartsUsed()` */
+  static readonly ListPartsUsedPath = '/api/appointments/{appointment_id}/parts';
 
   /**
-   * List Appointment Parts.
+   * List Parts Used.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `listAppointmentParts()` instead.
+   * To access only the response body, use `listPartsUsed()` instead.
    *
    * This method doesn't expect any request body.
    */
-  listAppointmentParts$Response(params: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartInstanceWithPartOut>>> {
-    const obs = listAppointmentParts(this.http, this.rootUrl, params, context);
+  listPartsUsed$Response(params: ListPartsUsed$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AppointmentPartOut>>> {
+    const obs = listPartsUsed(this.http, this.rootUrl, params, context);
     return obs;
   }
 
   /**
-   * List Appointment Parts.
+   * List Parts Used.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `listAppointmentParts$Response()` instead.
+   * To access the full response (for headers, for example), `listPartsUsed$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  listAppointmentParts(params: ListAppointmentParts$Params, context?: HttpContext): Observable<Array<PartInstanceWithPartOut>> {
-    const resp = this.listAppointmentParts$Response(params, context);
+  listPartsUsed(params: ListPartsUsed$Params, context?: HttpContext): Observable<Array<AppointmentPartOut>> {
+    const resp = this.listPartsUsed$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<Array<PartInstanceWithPartOut>>): Array<PartInstanceWithPartOut> => r.body)
+      map((r: StrictHttpResponse<Array<AppointmentPartOut>>): Array<AppointmentPartOut> => r.body)
     );
   }
 

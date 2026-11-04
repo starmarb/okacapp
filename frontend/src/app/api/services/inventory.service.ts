@@ -10,26 +10,26 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { AppointmentPartOut } from '../models/appointment-part-out';
+import { createAppointmentPart } from '../fn/inventory/create-appointment-part';
+import { CreateAppointmentPart$Params } from '../fn/inventory/create-appointment-part';
 import { createPart } from '../fn/inventory/create-part';
 import { CreatePart$Params } from '../fn/inventory/create-part';
-import { createPartInstance } from '../fn/inventory/create-part-instance';
-import { CreatePartInstance$Params } from '../fn/inventory/create-part-instance';
+import { getAppointmentPart } from '../fn/inventory/get-appointment-part';
+import { GetAppointmentPart$Params } from '../fn/inventory/get-appointment-part';
 import { getPart } from '../fn/inventory/get-part';
 import { GetPart$Params } from '../fn/inventory/get-part';
-import { getPartInstance } from '../fn/inventory/get-part-instance';
-import { GetPartInstance$Params } from '../fn/inventory/get-part-instance';
-import { listPartInstances } from '../fn/inventory/list-part-instances';
-import { ListPartInstances$Params } from '../fn/inventory/list-part-instances';
+import { listAppointmentParts } from '../fn/inventory/list-appointment-parts';
+import { ListAppointmentParts$Params } from '../fn/inventory/list-appointment-parts';
 import { listParts } from '../fn/inventory/list-parts';
 import { ListParts$Params } from '../fn/inventory/list-parts';
-import { PagedPartInstanceOut } from '../models/paged-part-instance-out';
+import { PagedAppointmentPartOut } from '../models/paged-appointment-part-out';
 import { PagedPartOut } from '../models/paged-part-out';
-import { PartInstanceOut } from '../models/part-instance-out';
 import { PartOut } from '../models/part-out';
+import { updateAppointmentPart } from '../fn/inventory/update-appointment-part';
+import { UpdateAppointmentPart$Params } from '../fn/inventory/update-appointment-part';
 import { updatePart } from '../fn/inventory/update-part';
 import { UpdatePart$Params } from '../fn/inventory/update-part';
-import { updatePartInstance } from '../fn/inventory/update-part-instance';
-import { UpdatePartInstance$Params } from '../fn/inventory/update-part-instance';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService extends BaseService {
@@ -177,143 +177,143 @@ export class InventoryService extends BaseService {
     );
   }
 
-  /** Path part for operation `getPartInstance()` */
-  static readonly GetPartInstancePath = '/api/inventory/instances/{instance_id}';
+  /** Path part for operation `getAppointmentPart()` */
+  static readonly GetAppointmentPartPath = '/api/inventory/appointment_parts/{appointment_part_id}';
 
   /**
-   * Get Part Instance.
+   * Get Appointment Part.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getPartInstance()` instead.
+   * To access only the response body, use `getAppointmentPart()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPartInstance$Response(params: GetPartInstance$Params, context?: HttpContext): Observable<StrictHttpResponse<PartInstanceOut>> {
-    const obs = getPartInstance(this.http, this.rootUrl, params, context);
+  getAppointmentPart$Response(params: GetAppointmentPart$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentPartOut>> {
+    const obs = getAppointmentPart(this.http, this.rootUrl, params, context);
     return obs;
   }
 
   /**
-   * Get Part Instance.
+   * Get Appointment Part.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getPartInstance$Response()` instead.
+   * To access the full response (for headers, for example), `getAppointmentPart$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPartInstance(params: GetPartInstance$Params, context?: HttpContext): Observable<PartInstanceOut> {
-    const resp = this.getPartInstance$Response(params, context);
+  getAppointmentPart(params: GetAppointmentPart$Params, context?: HttpContext): Observable<AppointmentPartOut> {
+    const resp = this.getAppointmentPart$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<PartInstanceOut>): PartInstanceOut => r.body)
+      map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
     );
   }
 
-  /** Path part for operation `updatePartInstance()` */
-  static readonly UpdatePartInstancePath = '/api/inventory/instances/{instance_id}';
+  /** Path part for operation `updateAppointmentPart()` */
+  static readonly UpdateAppointmentPartPath = '/api/inventory/appointment_parts/{appointment_part_id}';
 
   /**
-   * Update Part Instance.
+   * Update Appointment Part.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updatePartInstance()` instead.
+   * To access only the response body, use `updateAppointmentPart()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updatePartInstance$Response(params: UpdatePartInstance$Params, context?: HttpContext): Observable<StrictHttpResponse<PartInstanceOut>> {
-    const obs = updatePartInstance(this.http, this.rootUrl, params, context);
+  updateAppointmentPart$Response(params: UpdateAppointmentPart$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentPartOut>> {
+    const obs = updateAppointmentPart(this.http, this.rootUrl, params, context);
     return obs;
   }
 
   /**
-   * Update Part Instance.
+   * Update Appointment Part.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updatePartInstance$Response()` instead.
+   * To access the full response (for headers, for example), `updateAppointmentPart$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updatePartInstance(params: UpdatePartInstance$Params, context?: HttpContext): Observable<PartInstanceOut> {
-    const resp = this.updatePartInstance$Response(params, context);
+  updateAppointmentPart(params: UpdateAppointmentPart$Params, context?: HttpContext): Observable<AppointmentPartOut> {
+    const resp = this.updateAppointmentPart$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<PartInstanceOut>): PartInstanceOut => r.body)
+      map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
     );
   }
 
-  /** Path part for operation `listPartInstances()` */
-  static readonly ListPartInstancesPath = '/api/inventory/instances';
+  /** Path part for operation `listAppointmentParts()` */
+  static readonly ListAppointmentPartsPath = '/api/inventory/appointment_parts';
 
   /**
-   * List Part Instances.
+   * List Appointment Parts.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `listPartInstances()` instead.
+   * To access only the response body, use `listAppointmentParts()` instead.
    *
    * This method doesn't expect any request body.
    */
-  listPartInstances$Response(params?: ListPartInstances$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedPartInstanceOut>> {
-    const obs = listPartInstances(this.http, this.rootUrl, params, context);
+  listAppointmentParts$Response(params?: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedAppointmentPartOut>> {
+    const obs = listAppointmentParts(this.http, this.rootUrl, params, context);
     return obs;
   }
 
   /**
-   * List Part Instances.
+   * List Appointment Parts.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `listPartInstances$Response()` instead.
+   * To access the full response (for headers, for example), `listAppointmentParts$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  listPartInstances(params?: ListPartInstances$Params, context?: HttpContext): Observable<PagedPartInstanceOut> {
-    const resp = this.listPartInstances$Response(params, context);
+  listAppointmentParts(params?: ListAppointmentParts$Params, context?: HttpContext): Observable<PagedAppointmentPartOut> {
+    const resp = this.listAppointmentParts$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<PagedPartInstanceOut>): PagedPartInstanceOut => r.body)
+      map((r: StrictHttpResponse<PagedAppointmentPartOut>): PagedAppointmentPartOut => r.body)
     );
   }
 
-  /** Path part for operation `createPartInstance()` */
-  static readonly CreatePartInstancePath = '/api/inventory/instances';
+  /** Path part for operation `createAppointmentPart()` */
+  static readonly CreateAppointmentPartPath = '/api/inventory/appointment_parts';
 
   /**
-   * Create Part Instance.
+   * Create Appointment Part.
    *
    *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createPartInstance()` instead.
+   * To access only the response body, use `createAppointmentPart()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPartInstance$Response(params: CreatePartInstance$Params, context?: HttpContext): Observable<StrictHttpResponse<PartInstanceOut>> {
-    const obs = createPartInstance(this.http, this.rootUrl, params, context);
+  createAppointmentPart$Response(params: CreateAppointmentPart$Params, context?: HttpContext): Observable<StrictHttpResponse<AppointmentPartOut>> {
+    const obs = createAppointmentPart(this.http, this.rootUrl, params, context);
     return obs;
   }
 
   /**
-   * Create Part Instance.
+   * Create Appointment Part.
    *
    *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `createPartInstance$Response()` instead.
+   * To access the full response (for headers, for example), `createAppointmentPart$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPartInstance(params: CreatePartInstance$Params, context?: HttpContext): Observable<PartInstanceOut> {
-    const resp = this.createPartInstance$Response(params, context);
+  createAppointmentPart(params: CreateAppointmentPart$Params, context?: HttpContext): Observable<AppointmentPartOut> {
+    const resp = this.createAppointmentPart$Response(params, context);
     return resp.pipe(
-      map((r: StrictHttpResponse<PartInstanceOut>): PartInstanceOut => r.body)
+      map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
     );
   }
 

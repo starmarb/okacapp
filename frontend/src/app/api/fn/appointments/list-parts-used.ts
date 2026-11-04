@@ -7,17 +7,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PartInstanceIn } from '../../models/part-instance-in';
-import { PartInstanceOut } from '../../models/part-instance-out';
+import { AppointmentPartOut } from '../../models/appointment-part-out';
 
-export interface CreatePartInstance$Params {
-      body: PartInstanceIn
+export interface ListPartsUsed$Params {
+  appointment_id: number;
 }
 
-export function createPartInstance(http: HttpClient, rootUrl: string, params: CreatePartInstance$Params, context?: HttpContext): Observable<StrictHttpResponse<PartInstanceOut>> {
-  const rb = new RequestBuilder(rootUrl, createPartInstance.PATH, 'post');
+export function listPartsUsed(http: HttpClient, rootUrl: string, params: ListPartsUsed$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AppointmentPartOut>>> {
+  const rb = new RequestBuilder(rootUrl, listPartsUsed.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.path('appointment_id', params.appointment_id, {});
   }
 
   return http.request(
@@ -25,9 +24,9 @@ export function createPartInstance(http: HttpClient, rootUrl: string, params: Cr
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PartInstanceOut>;
+      return r as StrictHttpResponse<Array<AppointmentPartOut>>;
     })
   );
 }
 
-createPartInstance.PATH = '/api/inventory/instances';
+listPartsUsed.PATH = '/api/appointments/{appointment_id}/parts';

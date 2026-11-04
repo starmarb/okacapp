@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404
 from ninja import Router, Status
 from ninja.pagination import paginate
 
-from inventory.models import Part, PartInstance
-from inventory.schemas import PartIn, PartInstanceIn, PartInstanceOut, PartOut
+from inventory.models import AppointmentPart, Part
+from inventory.schemas import AppointmentPartIn, AppointmentPartOut, PartIn, PartOut
 
 router = Router(tags=["Inventory"])
 
@@ -37,38 +37,48 @@ def update_part(request, part_id: int, payload: PartIn):
 
 
 @router.get(
-    "/instances/{instance_id}", response=PartInstanceOut, operation_id="getPartInstance"
+    "/appointment_parts/{appointment_part_id}",
+    response=AppointmentPartOut,
+    operation_id="getAppointmentPart",
 )
-def get_part_instance(request, instance_id: int):
-    return get_object_or_404(PartInstance, id=instance_id)
+def get_appointment_part(request, appointment_part_id: int):
+    return get_object_or_404(AppointmentPart, id=appointment_part_id)
 
 
 @router.get(
-    "/instances", response=list[PartInstanceOut], operation_id="listPartInstances"
+    "/appointment_parts",
+    response=list[AppointmentPartOut],
+    operation_id="listAppointmentParts",
 )
 @paginate
-def list_part_instances(request):
-    return PartInstance.objects.all()
+def list_appointment_parts(request):
+    return AppointmentPart.objects.select_related("part").all()
 
 
 @router.post(
-    "/instances",
-    response={HTTPStatus.CREATED: PartInstanceOut},
-    operation_id="createPartInstance",
+    "/appointment_parts",
+    response={HTTPStatus.CREATED: AppointmentPartOut},
+    operation_id="createAppointmentPart",
 )
-def create_part_instance(request, payload: PartInstanceIn):
-    part_instance = PartInstance.objects.create(**payload.model_dump())
-    return Status(HTTPStatus.CREATED, part_instance)
+def create_appointment_part(request, payload: AppointmentPartIn):
+    # `by_alias=True` maps the FK fields to `part_id` / `appointment_id`, which is
+    # what `objects.create()` expects for relations.
+    appointment_part = AppointmentPart.objects.create(
+        **payload.model_dump(by_alias=True)
+    )
+    return Status(HTTPStatus.CREATED, appointment_part)
 
 
 @router.put(
-    "/instances/{instance_id}",
-    response=PartInstanceOut,
-    operation_id="updatePartInstance",
+    "/appointment_parts/{appointment_part_id}",
+    response=AppointmentPartOut,
+    operation_id="updateAppointmentPart",
 )
-def update_part_instance(request, instance_id: int, payload: PartInstanceIn):
-    part_instance = get_object_or_404(PartInstance, id=instance_id)
-    for key, value in payload.model_dump(exclude_unset=True).items():
-        setattr(part_instance, key, value)
-    part_instance.save()
-    return part_instance
+def update_appointment_part(
+    request, appointment_part_id: int, payload: AppointmentPartIn
+):
+    appointment_part = get_object_or_404(AppointmentPart, id=appointment_part_id)
+    for key, value in payload.model_dump(by_alias=True, exclude_unset=True).items():
+        setattr(appointment_part, key, value)
+    appointment_part.save()
+    return appointment_part

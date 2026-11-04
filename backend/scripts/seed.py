@@ -4,7 +4,7 @@
 Run from the backend/ directory:
     uv run python scripts/seed.py
 
-Wipes appointments/parts/part_instances/invoices, then inserts a small,
+Wipes appointments/parts/appointment_parts/invoices, then inserts a small,
 consistent dataset. Dev-only (refuses when DEBUG is False).
 """
 
@@ -33,7 +33,7 @@ from appointments.models import (  # noqa: E402
     Invoice,
     ServiceType,
 )
-from inventory.models import Part, PartInstance  # noqa: E402
+from inventory.models import AppointmentPart, Part  # noqa: E402
 
 # name, phone, email, address, status, service_type, day_offset, work_done
 APPOINTMENTS = [
@@ -113,7 +113,6 @@ PARTS = [
     ("General", "Valve", "GV-099", ""),
 ]
 
-PART_INSTANCE_COUNT = 20
 TAX_RATE = Decimal("0.10")
 
 
@@ -125,8 +124,8 @@ def main() -> None:
     now = timezone.now()
 
     with transaction.atomic():
-        # Wipe. PartInstance first: Part is PROTECTed while instances exist.
-        PartInstance.objects.all().delete()
+        # Wipe. AppointmentPart first: Part is PROTECTed while usages exist.
+        AppointmentPart.objects.all().delete()
         Invoice.objects.all().delete()
         Part.objects.all().delete()
         Appointment.objects.all().delete()
@@ -169,12 +168,19 @@ def main() -> None:
             for brand, name, model_number, warranty in PARTS
         ]
 
-        for i in range(1, PART_INSTANCE_COUNT + 1):
-            PartInstance.objects.create(
-                part=random.choice(parts),
-                appointment=random.choice(appointments),
-                serial_number=f"SN-{i:04d}",
-            )
+        serial = 0
+        for appointment in appointments:
+            # One row per (part, appointment); sample avoids duplicate parts.
+            for part in random.sample(parts, k=random.randint(1, 3)):
+                serial += 1
+                has_serial = random.random() < 0.8
+                serial_numbers = [f"SN-{serial:04d}"] if has_serial else []
+                AppointmentPart.objects.create(
+                    part=part,
+                    appointment=appointment,
+                    quantity=len(serial_numbers) or 1,
+                    serial_numbers=serial_numbers,
+                )
 
         for appointment in appointments:
             total_service = Decimal(random.randrange(50, 500, 10))
@@ -196,7 +202,7 @@ def main() -> None:
     print(
         f"Seeded {Appointment.objects.count()} appointments, "
         f"{Part.objects.count()} parts, "
-        f"{PartInstance.objects.count()} part instances, "
+        f"{AppointmentPart.objects.count()} appointment parts, "
         f"{Invoice.objects.count()} invoices."
     )
 

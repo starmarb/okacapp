@@ -7,15 +7,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PagedPartInstanceOut } from '../../models/paged-part-instance-out';
+import { PagedAppointmentPartOut } from '../../models/paged-appointment-part-out';
 
-export interface ListPartInstances$Params {
+export interface ListAppointmentParts$Params {
   limit?: number;
   offset?: number;
 }
 
-export function listPartInstances(http: HttpClient, rootUrl: string, params?: ListPartInstances$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedPartInstanceOut>> {
-  const rb = new RequestBuilder(rootUrl, listPartInstances.PATH, 'get');
+export function listAppointmentParts(http: HttpClient, rootUrl: string, params?: ListAppointmentParts$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedAppointmentPartOut>> {
+  const rb = new RequestBuilder(rootUrl, listAppointmentParts.PATH, 'get');
   if (params) {
     rb.query('limit', params.limit, {});
     rb.query('offset', params.offset, {});
@@ -26,9 +26,9 @@ export function listPartInstances(http: HttpClient, rootUrl: string, params?: Li
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PagedPartInstanceOut>;
+      return r as StrictHttpResponse<PagedAppointmentPartOut>;
     })
   );
 }
 
-listPartInstances.PATH = '/api/inventory/instances';
+listAppointmentParts.PATH = '/api/inventory/appointment_parts';
