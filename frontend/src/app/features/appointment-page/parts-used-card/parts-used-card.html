@@ -1,11 +1,16 @@
 <section class="card flex flex-col">
   <header class="flex items-center justify-between gap-2 border-b border-neutral-200 px-4 py-3">
-    <h2 class="text-base font-semibold">Parts Used</h2>
-    @if (instanceCount()) {
-      <span class="text-xs text-neutral-500">
-        {{ instanceCount() }} {{ instanceCount() === 1 ? 'part' : 'parts' }}
-      </span>
-    }
+    <div class="flex">
+      <h2 class="text-base font-semibold">Parts Used</h2>
+      @if (instanceCount()) {
+        <span class="text-xs text-neutral-500">
+          {{ instanceCount() }} {{ instanceCount() === 1 ? 'part' : 'parts' }}
+        </span>
+      }
+    </div>
+    <button mat-icon-button class="justify-self-start">
+      <mat-icon fontIcon="add" (click)="openForm()" />
+    </button>
   </header>
 
   @if (instances.error()) {

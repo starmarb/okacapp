@@ -2,15 +2,19 @@ import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentsService } from '@app/api/services';
 import { PartGroup, PartUsageGroup } from '../part-group/part-group';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { PartForm } from '../part-form/part-form';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  imports: [PartGroup],
+  imports: [PartGroup, MatIconModule],
   selector: 'app-parts-used-card',
   styleUrl: './parts-used-card.css',
   templateUrl: './parts-used-card.html',
 })
 export class PartsUsedCard {
   private readonly appointmentsService = inject(AppointmentsService);
+  private readonly _bottomSheet = inject(MatBottomSheet);
 
   readonly appointmentId = input.required<number>();
 
@@ -37,4 +41,8 @@ export class PartsUsedCard {
   });
 
   readonly instanceCount = computed(() => this.instances.value()?.length ?? 0);
+
+  openForm(): void {
+    this._bottomSheet.open(PartForm);
+  }
 }
