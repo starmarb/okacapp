@@ -35,14 +35,10 @@ class AppointmentPartIn(ModelSchema):
 
 
 class AppointmentPartOut(ModelSchema):
-    # One row per (part, appointment). `part` is embedded so a single request is
-    # enough to render the "parts used" list; remember to `.select_related("part")`
-    # the queryset or serializing dereferences the FK once per row (N+1).
     id: int
     part: PartOut
     quantity: int
     serial_numbers: list[str]
-    appointment: int
 
     class Meta:
         model = AppointmentPart
