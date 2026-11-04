@@ -40,3 +40,16 @@ class PartInstanceOut(ModelSchema):
     class Meta:
         model = PartInstance
         fields = "__all__"
+
+
+class PartInstanceWithPartOut(ModelSchema):
+    # Embeds the full Part so a single request is enough to group instances by
+    # part. Remember to `.select_related("part")` the queryset, or serializing
+    # will dereference the FK once per row (N+1).
+    id: int
+    serial_number: str
+    part: PartOut
+
+    class Meta:
+        model = PartInstance
+        fields = "__all__"

@@ -8,7 +8,7 @@ from ninja.patch_dict import PatchDict
 from appointments.models import Appointment, Invoice, Photo
 from appointments.schemas import AppointmentIn, AppointmentOut, InvoiceIn, InvoiceOut
 from inventory.models import PartInstance
-from inventory.schemas import PartInstanceOut
+from inventory.schemas import PartInstanceWithPartOut
 
 router = Router(tags=["Appointments"])
 
@@ -88,9 +88,11 @@ def get_invoice(request, invoice_id: int):
 
 @router.get(
     "/{appointment_id}/part_instances",
-    response=list[PartInstanceOut],
+    response=list[PartInstanceWithPartOut],
     operation_id="listAppointmentParts",
 )
 def list_appointment_parts(request, appointment_id: int):
     get_object_or_404(Appointment, id=appointment_id)
-    return PartInstance.objects.filter(appointment_id=appointment_id)
+    return PartInstance.objects.filter(appointment_id=appointment_id).select_related(
+        "part"
+    )
