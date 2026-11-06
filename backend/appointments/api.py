@@ -1,14 +1,24 @@
 from http import HTTPStatus
 
+from django.conf import settings
 from django.db import transaction
+from django.http import FileResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from ninja import Router, Status
+from ninja import File, Router, Status, UploadedFile
 from ninja.errors import HttpError
 from ninja.pagination import paginate
 from ninja.patch_dict import PatchDict
 
+from appointments import photos
+from appointments.images import UnsupportedImage, process_upload
 from appointments.models import Appointment, Invoice, Photo
-from appointments.schemas import AppointmentIn, AppointmentOut, InvoiceIn, InvoiceOut
+from appointments.schemas import (
+    AppointmentIn,
+    AppointmentOut,
+    InvoiceIn,
+    InvoiceOut,
+    PhotoOut,
+)
 from inventory.models import AppointmentPart, Part
 from inventory.schemas import AppointmentPartOut, PartUsedIn
 
@@ -216,3 +226,78 @@ def update_part_used(
         row.save(update_fields=["quantity", "serial_numbers"])
 
     return row
+
+
+@router.post(
+    "/{appointment_id}/photos",
+    response={HTTPStatus.CREATED: PhotoOut},
+    operation_id="addPhoto",
+)
+def add_photo(request, appointment_id: int, file: File[UploadedFile]):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    if file.size > settings.PHOTO_MAX_UPLOAD_BYTES:
+        raise HttpError(413, "Photo is too large")
+
+    try:
+        processed = process_upload(file)
+    except UnsupportedImage as exc:
+        raise HttpError(400, str(exc)) from exc
+
+    full_key = photos.new_key(appointment_id)
+    thumb_key = photos.new_key(appointment_id, suffix="_thumb")
+    saved_key = photos.save_bytes(full_key, processed.full)
+    saved_thumb_key = photos.save_bytes(thumb_key, processed.thumbnail)
+
+    try:
+        photo = Photo.objects.create(
+            appointment=appointment,
+            storage_key=saved_key,
+            thumbnail_key=saved_thumb_key,
+            content_type=processed.content_type,
+            width=processed.width,
+            height=processed.height,
+        )
+    except Exception:
+        photos.delete_bytes(saved_key)
+        photos.delete_bytes(saved_thumb_key)
+        raise
+
+    return Status(HTTPStatus.CREATED, photo)
+
+
+@router.get(
+    "/{appointment_id}/photos",
+    response=list[PhotoOut],
+    operation_id="listPhotos",
+)
+def list_photos(request, appointment_id: int):
+    get_object_or_404(Appointment, id=appointment_id)
+    return Photo.objects.filter(appointment_id=appointment_id)
+
+
+@router.delete(
+    "/photos/{photo_id}",
+    response={HTTPStatus.NO_CONTENT: None},
+    operation_id="deletePhoto",
+)
+def delete_photo(request, photo_id: int):
+    photo = get_object_or_404(Photo, id=photo_id)
+    photo.delete()  # blobs removed by the post_delete receiver
+    return HTTPStatus.NO_CONTENT, None
+
+
+@router.get("/photos/{photo_id}/content", operation_id="getPhotoContent")
+def get_photo_content(request, photo_id: int, thumb: bool = False):
+    photo = get_object_or_404(Photo, id=photo_id)
+    key = photo.thumbnail_key if thumb and photo.thumbnail_key else photo.storage_key
+
+    if settings.PHOTO_SERVE_MODE == "redirect":
+        return HttpResponseRedirect(photos.direct_url(key))
+
+    try:
+        handle = photos.open_bytes(key)
+    except FileNotFoundError as exc:
+        raise HttpError(404, "Photo file is missing") from exc
+
+    return FileResponse(handle, content_type=photo.content_type)

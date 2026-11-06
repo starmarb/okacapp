@@ -3,7 +3,13 @@ from decimal import Decimal
 
 from ninja import ModelSchema
 
-from appointments.models import Appointment, AppointmentStatus, Invoice, ServiceType
+from appointments.models import (
+    Appointment,
+    AppointmentStatus,
+    Invoice,
+    Photo,
+    ServiceType,
+)
 
 
 class AppointmentIn(ModelSchema):
@@ -61,3 +67,31 @@ class InvoiceOut(ModelSchema):
     class Meta:
         model = Invoice
         fields = "__all__"
+
+
+class PhotoOut(ModelSchema):
+    # Only what a caller actually renders: identity, intrinsic size for layout,
+    # and URLs. Storage keys and bookkeeping stay server-side.
+    id: int
+    width: int
+    height: int
+    url: str
+    thumbnail_url: str
+
+    class Meta:
+        model = Photo
+        exclude = [
+            "storage_key",
+            "thumbnail_key",
+            "appointment",
+            "content_type",
+            "created_at",
+        ]
+
+    @staticmethod
+    def resolve_url(obj: Photo) -> str:
+        return f"/api/appointments/photos/{obj.pk}/content"
+
+    @staticmethod
+    def resolve_thumbnail_url(obj: Photo) -> str:
+        return f"/api/appointments/photos/{obj.pk}/content?thumb=1"

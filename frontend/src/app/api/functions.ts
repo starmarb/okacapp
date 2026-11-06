@@ -25,6 +25,14 @@ export type { AddPartUsed$Params as AddPartUsed$Params } from './fn/appointments
 export { addPartUsed as addPartUsed } from './fn/appointments/add-part-used';
 export type { UpdatePartUsed$Params as UpdatePartUsed$Params } from './fn/appointments/update-part-used';
 export { updatePartUsed as updatePartUsed } from './fn/appointments/update-part-used';
+export type { ListPhotos$Params as ListPhotos$Params } from './fn/appointments/list-photos';
+export { listPhotos as listPhotos } from './fn/appointments/list-photos';
+export type { AddPhoto$Params as AddPhoto$Params } from './fn/appointments/add-photo';
+export { addPhoto as addPhoto } from './fn/appointments/add-photo';
+export type { DeletePhoto$Params as DeletePhoto$Params } from './fn/appointments/delete-photo';
+export { deletePhoto as deletePhoto } from './fn/appointments/delete-photo';
+export type { GetPhotoContent$Params as GetPhotoContent$Params } from './fn/appointments/get-photo-content';
+export { getPhotoContent as getPhotoContent } from './fn/appointments/get-photo-content';
 export type { ListParts$Params as ListParts$Params } from './fn/inventory/list-parts';
 export { listParts as listParts } from './fn/inventory/list-parts';
 export type { CreatePart$Params as CreatePart$Params } from './fn/inventory/create-part';

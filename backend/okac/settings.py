@@ -123,6 +123,11 @@ STATIC_URL = "static/"
 # Photo storage
 
 PHOTO_SERVE_MODE = os.environ.get("PHOTO_SERVE_MODE", "proxy")  # "proxy" | "redirect"
+PHOTO_MAX_UPLOAD_BYTES = int(os.environ.get("PHOTO_MAX_UPLOAD_BYTES", 20 * 1024 * 1024))
+PHOTO_MAX_DIMENSION = int(os.environ.get("PHOTO_MAX_DIMENSION", 1920))
+PHOTO_THUMBNAIL_DIMENSION = int(os.environ.get("PHOTO_THUMBNAIL_DIMENSION", 400))
+PHOTO_WEBP_QUALITY = int(os.environ.get("PHOTO_WEBP_QUALITY", 78))
+PHOTO_MAX_IMAGE_PIXELS = int(os.environ.get("PHOTO_MAX_IMAGE_PIXELS", 50_000_000))
 PHOTO_STORAGE_BACKEND = os.environ.get(
     "PHOTO_STORAGE_BACKEND", "django.core.files.storage.FileSystemStorage"
 )

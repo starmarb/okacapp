@@ -15,4 +15,5 @@ export type { PagedPartOut } from './models/paged-part-out';
 export type { PartIn } from './models/part-in';
 export type { PartOut } from './models/part-out';
 export type { PartUsedIn } from './models/part-used-in';
+export type { PhotoOut } from './models/photo-out';
 export type { ServiceType } from './models/service-type';

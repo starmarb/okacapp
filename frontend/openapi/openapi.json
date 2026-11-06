@@ -464,6 +464,153 @@
         }
       }
     },
+    "/api/appointments/{appointment_id}/photos": {
+      "post": {
+        "operationId": "addPhoto",
+        "summary": "Add Photo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoOut"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "title": "File",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "title": "FileParams",
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "get": {
+        "operationId": "listPhotos",
+        "summary": "List Photos",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointment_id",
+            "schema": {
+              "title": "Appointment Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PhotoOut"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/appointments/photos/{photo_id}": {
+      "delete": {
+        "operationId": "deletePhoto",
+        "summary": "Delete Photo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "photo_id",
+            "schema": {
+              "title": "Photo Id",
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
+    "/api/appointments/photos/{photo_id}/content": {
+      "get": {
+        "operationId": "getPhotoContent",
+        "summary": "Get Photo Content",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "photo_id",
+            "schema": {
+              "title": "Photo Id",
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "thumb",
+            "schema": {
+              "default": false,
+              "title": "Thumb",
+              "type": "boolean"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Appointments"
+        ]
+      }
+    },
     "/api/inventory/": {
       "get": {
         "operationId": "listParts",
@@ -1306,6 +1453,39 @@
           "brand"
         ],
         "title": "PartUsedIn",
+        "type": "object"
+      },
+      "PhotoOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "width": {
+            "title": "Width",
+            "type": "integer"
+          },
+          "height": {
+            "title": "Height",
+            "type": "integer"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "thumbnail_url": {
+            "title": "Thumbnail Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "width",
+          "height",
+          "url",
+          "thumbnail_url"
+        ],
+        "title": "PhotoOut",
         "type": "object"
       },
       "PagedPartOut": {

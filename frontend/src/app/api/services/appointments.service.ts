@@ -12,16 +12,22 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { addPartUsed } from '../fn/appointments/add-part-used';
 import { AddPartUsed$Params } from '../fn/appointments/add-part-used';
+import { addPhoto } from '../fn/appointments/add-photo';
+import { AddPhoto$Params } from '../fn/appointments/add-photo';
 import { AppointmentOut } from '../models/appointment-out';
 import { AppointmentPartOut } from '../models/appointment-part-out';
 import { createAppointment } from '../fn/appointments/create-appointment';
 import { CreateAppointment$Params } from '../fn/appointments/create-appointment';
 import { createInvoice } from '../fn/appointments/create-invoice';
 import { CreateInvoice$Params } from '../fn/appointments/create-invoice';
+import { deletePhoto } from '../fn/appointments/delete-photo';
+import { DeletePhoto$Params } from '../fn/appointments/delete-photo';
 import { getAppointment } from '../fn/appointments/get-appointment';
 import { GetAppointment$Params } from '../fn/appointments/get-appointment';
 import { getInvoice } from '../fn/appointments/get-invoice';
 import { GetInvoice$Params } from '../fn/appointments/get-invoice';
+import { getPhotoContent } from '../fn/appointments/get-photo-content';
+import { GetPhotoContent$Params } from '../fn/appointments/get-photo-content';
 import { InvoiceOut } from '../models/invoice-out';
 import { listAppointmentInvoices } from '../fn/appointments/list-appointment-invoices';
 import { ListAppointmentInvoices$Params } from '../fn/appointments/list-appointment-invoices';
@@ -29,9 +35,12 @@ import { listAppointments } from '../fn/appointments/list-appointments';
 import { ListAppointments$Params } from '../fn/appointments/list-appointments';
 import { listPartsUsed } from '../fn/appointments/list-parts-used';
 import { ListPartsUsed$Params } from '../fn/appointments/list-parts-used';
+import { listPhotos } from '../fn/appointments/list-photos';
+import { ListPhotos$Params } from '../fn/appointments/list-photos';
 import { PagedAppointmentOut } from '../models/paged-appointment-out';
 import { patchAppointment } from '../fn/appointments/patch-appointment';
 import { PatchAppointment$Params } from '../fn/appointments/patch-appointment';
+import { PhotoOut } from '../models/photo-out';
 import { updateAppointment } from '../fn/appointments/update-appointment';
 import { UpdateAppointment$Params } from '../fn/appointments/update-appointment';
 import { updateInvoice } from '../fn/appointments/update-invoice';
@@ -468,6 +477,146 @@ export class AppointmentsService extends BaseService {
     const resp = this.updatePartUsed$Response(params, context);
     return resp.pipe(
       map((r: StrictHttpResponse<AppointmentPartOut>): AppointmentPartOut => r.body)
+    );
+  }
+
+  /** Path part for operation `listPhotos()` */
+  static readonly ListPhotosPath = '/api/appointments/{appointment_id}/photos';
+
+  /**
+   * List Photos.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `listPhotos()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  listPhotos$Response(params: ListPhotos$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PhotoOut>>> {
+    const obs = listPhotos(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * List Photos.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `listPhotos$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  listPhotos(params: ListPhotos$Params, context?: HttpContext): Observable<Array<PhotoOut>> {
+    const resp = this.listPhotos$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<Array<PhotoOut>>): Array<PhotoOut> => r.body)
+    );
+  }
+
+  /** Path part for operation `addPhoto()` */
+  static readonly AddPhotoPath = '/api/appointments/{appointment_id}/photos';
+
+  /**
+   * Add Photo.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addPhoto()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addPhoto$Response(params: AddPhoto$Params, context?: HttpContext): Observable<StrictHttpResponse<PhotoOut>> {
+    const obs = addPhoto(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Add Photo.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addPhoto$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addPhoto(params: AddPhoto$Params, context?: HttpContext): Observable<PhotoOut> {
+    const resp = this.addPhoto$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<PhotoOut>): PhotoOut => r.body)
+    );
+  }
+
+  /** Path part for operation `deletePhoto()` */
+  static readonly DeletePhotoPath = '/api/appointments/photos/{photo_id}';
+
+  /**
+   * Delete Photo.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deletePhoto()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deletePhoto$Response(params: DeletePhoto$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    const obs = deletePhoto(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Delete Photo.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deletePhoto$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deletePhoto(params: DeletePhoto$Params, context?: HttpContext): Observable<void> {
+    const resp = this.deletePhoto$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `getPhotoContent()` */
+  static readonly GetPhotoContentPath = '/api/appointments/photos/{photo_id}/content';
+
+  /**
+   * Get Photo Content.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPhotoContent()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPhotoContent$Response(params: GetPhotoContent$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    const obs = getPhotoContent(this.http, this.rootUrl, params, context);
+    return obs;
+  }
+
+  /**
+   * Get Photo Content.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getPhotoContent$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPhotoContent(params: GetPhotoContent$Params, context?: HttpContext): Observable<void> {
+    const resp = this.getPhotoContent$Response(params, context);
+    return resp.pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
