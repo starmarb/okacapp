@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -117,6 +118,39 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+
+# Photo storage
+
+PHOTO_SERVE_MODE = os.environ.get("PHOTO_SERVE_MODE", "proxy")  # "proxy" | "redirect"
+PHOTO_STORAGE_BACKEND = os.environ.get(
+    "PHOTO_STORAGE_BACKEND", "django.core.files.storage.FileSystemStorage"
+)
+
+if PHOTO_STORAGE_BACKEND.startswith("storages.backends.s3"):
+    PHOTO_STORAGE_OPTIONS = {
+        "bucket_name": os.environ["PHOTO_BUCKET"],
+        "endpoint_url": os.environ["PHOTO_ENDPOINT_URL"],
+        "access_key": os.environ["PHOTO_ACCESS_KEY"],
+        "secret_key": os.environ["PHOTO_SECRET_KEY"],
+        "region_name": os.environ.get("PHOTO_REGION", "us-east-1"),
+        "addressing_style": "path",
+        "querystring_auth": True,
+    }
+else:
+    PHOTO_STORAGE_OPTIONS = {
+        "location": BASE_DIR / "media" / "photos",
+        "base_url": "/media/photos/",
+    }
+
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    "photos": {
+        "BACKEND": PHOTO_STORAGE_BACKEND,
+        "OPTIONS": PHOTO_STORAGE_OPTIONS,
+    },
+}
 
 
 # Default primary key field type
