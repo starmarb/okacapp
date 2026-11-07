@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 p-3">
+<div class="flex flex-col gap-4 p-3 pb-24">
   <h1 class="text-lg font-bold text-neutral-900">Appointments</h1>
 
   @defer (when appointments.hasValue()) {
@@ -14,4 +14,19 @@
   } @error {
     <p class="text-sm font-thin">Failed to load appointments.</p>
   }
+</div>
+
+<!-- Fixed to the viewport but aligned with the app's centered max-w-md column. -->
+<div
+  class="pointer-events-none fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-30 mx-auto flex w-full max-w-md justify-end px-4"
+>
+  <button
+    matFab
+    type="button"
+    class="pointer-events-auto"
+    aria-label="New appointment"
+    (click)="createAppointment()"
+  >
+    <mat-icon fontIcon="add" />
+  </button>
 </div>
