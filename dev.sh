@@ -20,6 +20,13 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+# `npm start` never installs; sync the frontend once if node_modules is missing.
+# (`uv run` already syncs the backend environment before starting Django.)
+if [ ! -x "$ROOT/frontend/node_modules/.bin/ng" ]; then
+  echo "-> frontend   installing dependencies (npm ci)"
+  ( cd "$ROOT/frontend" && npm ci )
+fi
+
 echo "-> backend    http://localhost:8000   (Django)"
 ( cd "$ROOT/backend" && exec uv run manage.py runserver ) &
 PIDS+=($!)
