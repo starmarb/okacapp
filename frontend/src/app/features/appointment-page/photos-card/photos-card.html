@@ -1,0 +1,74 @@
+<section class="card flex flex-col">
+  <header class="flex items-center justify-between gap-2 border-b border-neutral-200 px-4 py-3">
+    <h2 class="text-base font-semibold">Photos</h2>
+    <div class="flex items-center gap-1">
+      @if (count()) {
+        <span class="text-xs text-neutral-500">{{ count() }}</span>
+      }
+      <button mat-icon-button type="button" aria-label="Add photos" (click)="openUpload()">
+        <mat-icon fontIcon="add_photo_alternate" />
+      </button>
+    </div>
+  </header>
+
+  @if (photos.error()) {
+    <p class="px-4 py-4 text-sm text-red-600">Couldn’t load photos.</p>
+  } @else if (!photos.hasValue()) {
+    <p class="px-4 py-4 text-sm text-neutral-500">Loading…</p>
+  } @else if (count() === 0) {
+    <button
+      type="button"
+      class="flex flex-col items-center gap-1 px-4 py-8 text-sm text-neutral-500 hover:text-neutral-700"
+      (click)="openUpload()"
+    >
+      <mat-icon fontIcon="add_a_photo" />
+      Add photos
+    </button>
+  } @else {
+    <div class="relative">
+      <button
+        type="button"
+        class="absolute left-1 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-white/85 p-1 text-neutral-700 shadow-sm hover:bg-white sm:flex"
+        aria-label="Scroll left"
+        (click)="scrollStrip(-1)"
+      >
+        <mat-icon fontIcon="chevron_left" />
+      </button>
+
+      <div
+        #strip
+        class="flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth overscroll-x-contain px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        role="region"
+        aria-label="Appointment photos"
+      >
+        @for (photo of photos.value() ?? []; track photo.id; let i = $index) {
+          <button
+            type="button"
+            class="h-24 w-24 shrink-0 snap-start overflow-hidden rounded-lg bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2"
+            [attr.aria-label]="'View photo ' + (i + 1) + ' of ' + count()"
+            (click)="openViewer(i)"
+          >
+            <img
+              [src]="photo.thumbnail_url"
+              [attr.width]="photo.width"
+              [attr.height]="photo.height"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </button>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="absolute right-1 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-white/85 p-1 text-neutral-700 shadow-sm hover:bg-white sm:flex"
+        aria-label="Scroll right"
+        (click)="scrollStrip(1)"
+      >
+        <mat-icon fontIcon="chevron_right" />
+      </button>
+    </div>
+  }
+</section>

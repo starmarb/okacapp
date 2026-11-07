@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { AppointmentsService } from '@app/api/services';
 
 import { AppointmentCard } from '@app/shared/appointment-card/appointment-card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -12,9 +13,18 @@ import {
 } from '@app/features/appointment-form/appointment-form';
 import { WorkDoneCard } from './work-done-card/work-done-card';
 import { PartsUsedCard } from './parts-used-card/parts-used-card';
+import { PhotosCard } from './photos-card/photos-card';
 
 @Component({
-  imports: [AppointmentCard, WorkDoneCard, PartsUsedCard, MatIconModule, RouterLink],
+  imports: [
+    AppointmentCard,
+    WorkDoneCard,
+    PartsUsedCard,
+    PhotosCard,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+  ],
   selector: 'app-appointment-page',
   styleUrl: './appointment-page.css',
   templateUrl: './appointment-page.html',

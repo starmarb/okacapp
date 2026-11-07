@@ -1,0 +1,49 @@
+<div class="flex flex-col gap-3 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+  <h2 class="text-base font-semibold">Add photos</h2>
+
+  <input
+    #cameraInput
+    type="file"
+    [attr.accept]="accept"
+    capture="environment"
+    hidden
+    (change)="onFiles($event)"
+  />
+  <input #fileInput type="file" [attr.accept]="accept" multiple hidden (change)="onFiles($event)" />
+
+  <button
+    matButton="filled"
+    type="button"
+    class="w-full"
+    [disabled]="uploading()"
+    (click)="takePhoto()"
+  >
+    <mat-icon fontIcon="photo_camera" />
+    Take photo
+  </button>
+
+  <button
+    matButton="outlined"
+    type="button"
+    class="w-full"
+    [disabled]="uploading()"
+    (click)="chooseFiles()"
+  >
+    <mat-icon fontIcon="photo_library" />
+    Choose from files
+  </button>
+
+  @if (uploading()) {
+    <p class="text-sm text-neutral-500" aria-live="polite">
+      Uploading {{ progress().done }} / {{ progress().total }}…
+    </p>
+  }
+
+  @if (error()) {
+    <p class="text-sm text-red-600">{{ error() }}</p>
+  }
+
+  <button matButton type="button" class="w-full" [disabled]="uploading()" (click)="cancel()">
+    Cancel
+  </button>
+</div>
